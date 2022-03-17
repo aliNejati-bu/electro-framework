@@ -1,0 +1,11 @@
+{
+    "name": "alinejati-bu/electro-framework",
+    "type": "project",
+    "authors": [
+        {
+            "name": "aliNejati-bu",
+            "email": "electrocellco@gmail.com"
+        }
+    ],
+    "require": {}
+}
