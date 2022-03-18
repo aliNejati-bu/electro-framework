@@ -69,4 +69,12 @@ interface ResponseInterface
     public function cookie(string $name,string $value,int $lifetime = 3600,array $options = []): ResponseInterface;
 
 
+    /**
+     * @param string $name
+     * @param string $value
+     * @param array $param
+     * @return ResponseInterface
+     */
+    public function session(string $name, string $value,array $param): ResponseInterface;
+
 }
