@@ -78,4 +78,5 @@ interface RequestInterface
      * get json decoded body
      */
     public function jsonBody() : stdClass;
+
 }

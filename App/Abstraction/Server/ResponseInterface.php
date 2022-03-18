@@ -12,7 +12,7 @@ interface ResponseInterface
      * @param string $value value of the header
      * @return ResponseInterface
      */
-    public function addHeader(string $key, string $value) : ResponseInterface;
+    public function addHeader(string $key, string $value): ResponseInterface;
 
 
     /**
@@ -26,7 +26,7 @@ interface ResponseInterface
      * @param int $code status code for return
      * @return ResponseInterface
      */
-    public function status(int $code) : ResponseInterface;
+    public function status(int $code): ResponseInterface;
 
     /**
      * @param TemplateEngineInterface $view
@@ -35,13 +35,38 @@ interface ResponseInterface
     public function view(TemplateEngineInterface $view): ResponseInterface;
 
     /**
-     * @param object|array $body json body
+     * @param BaseJsonInterface|array $body
      * @return ResponseInterface
      */
-    public function json(BaseJsonInterface|array $body):ResponseInterface;
+    public function json(BaseJsonInterface|array $body): ResponseInterface;
 
-    public function send(mixed $body):ResponseInterface;
+    /**
+     * @param string|array|BaseJsonInterface|TemplateEngineInterface $body
+     * @return ResponseInterface
+     */
+    public function send(string|array|BaseJsonInterface|TemplateEngineInterface $body): ResponseInterface;
 
+    /**
+     * @return bool
+     */
+    public function end(): bool;
+
+    /**
+     * @param string $url url for redirect
+     * @return ResponseInterface
+     * for redirect
+     */
+    public function redirect(string $url): ResponseInterface;
+
+    /**
+     * @param string $name
+     * @param string $value
+     * @param int $lifetime lifetime in second
+     * @param array $options
+     * @return ResponseInterface
+     * set cookie
+     */
+    public function cookie(string $name,string $value,int $lifetime = 3600,array $options = []): ResponseInterface;
 
 
 }
