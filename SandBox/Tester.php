@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-namespace SandBox;
+namespace Electro\SandBox;
 class Tester
 {
     public static function main()

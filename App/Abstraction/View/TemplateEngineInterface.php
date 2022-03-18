@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Abstraction\View;
+namespace Electro\App\Abstraction\View;
 
 
 interface TemplateEngineInterface

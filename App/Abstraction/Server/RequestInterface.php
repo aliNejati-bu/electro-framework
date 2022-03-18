@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Abstraction\Server;
+namespace Electro\App\Abstraction\Server;
 
 use stdClass;
 

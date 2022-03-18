@@ -14,4 +14,4 @@ require_once ELECTRO_BASE . DIRECTORY_SEPARATOR . "Bootstrap" . DIRECTORY_SEPARA
 \Bootstrap\Loader::BOOT();
 
 // call tester
-\SandBox\Tester::main();
+Electro\SandBox\Tester::main();
