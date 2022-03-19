@@ -8,6 +8,7 @@ class Loader
 {
     public static function BOOT()
     {
+        session_start();
         spl_autoload_register(function ($class) {
             $class = str_replace('Electro\\', "", $class);
             $file = ELECTRO_BASE . DIRECTORY_SEPARATOR .

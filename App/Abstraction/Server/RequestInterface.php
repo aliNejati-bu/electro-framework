@@ -77,6 +77,8 @@ interface RequestInterface
      * @return stdClass
      * get Json decoded body
      */
-    public function jsonBody() : stdClass;
+    public function jsonBody() : stdClass|null;
+
+    public function body():stdClass;
 
 }

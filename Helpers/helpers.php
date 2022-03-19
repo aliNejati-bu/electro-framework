@@ -26,3 +26,24 @@ function getContainer(string $name): mixed
 {
     return DIC()->get($name);
 }
+
+
+
+
+# json
+function isJson($string): bool
+{
+    json_decode($string);
+    return json_last_error() === JSON_ERROR_NONE;
+}
+
+function convertToObject($array) {
+    $object = new stdClass();
+    foreach ($array as $key => $value) {
+        if (is_array($value)) {
+            $value = convertToObject($value);
+        }
+        $object->$key = $value;
+    }
+    return $object;
+}
