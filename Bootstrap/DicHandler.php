@@ -40,7 +40,7 @@ class DicHandler
      * @throws NotFoundException No entry found for the given name.
      * @return mixed|T
      */
-    public function get(string $name): mixed
+    public static function get(string $name): mixed
     {
         return self::$_container->get($name);
     }

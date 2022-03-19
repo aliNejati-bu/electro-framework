@@ -16,11 +16,14 @@ class Loader
             require_once $file; // include if file exists.
         });
         self::loadDIC();
+
     }
 
     public static function loadDIC()
     {
         DicHandler::Register();
+        // add app path to Container
+        DicHandler::getContainer()->set("App_path", ELECTRO_BASE);
         DicHandler::addGroup(require_once ELECTRO_BASE . DIRECTORY_SEPARATOR . "Bootstrap" . DIRECTORY_SEPARATOR . "Providers" . DIRECTORY_SEPARATOR . "define.php");
     }
 }

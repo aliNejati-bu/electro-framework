@@ -1,19 +1,19 @@
 <?php
 
 declare(strict_types=1);
+
 namespace Electro\SandBox;
-use DI\Container;
-use Electro\App\Abstraction\Server\RequestInterface;
+
+use Electro\App\Abstraction\Config\ConfigServiceInterface;
+use Electro\Bootstrap\DicHandler;
 
 class Tester
 {
     public static function main()
     {
-        $di = new Container();
-        echo RequestInterface::class;
-        $di->set(app::class,\DI\autowire(app::class)->constructorParameter("app","reza"));
-
-        $newDi = new Container();
-        var_dump($newDi->get(app::class));
+        DicHandler::get(ConfigServiceInterface::class)->addScope("app");
+        var_dump(DicHandler::get(ConfigServiceInterface::class)->getConfig("app","app_url"));
+        var_dump(DicHandler::get(ConfigServiceInterface::class)->getConfig("app","app_url"));
+        var_dump(DicHandler::get(ConfigServiceInterface::class)->getConfig("app","app_url"));
     }
 }

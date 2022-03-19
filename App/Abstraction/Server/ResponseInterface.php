@@ -2,7 +2,7 @@
 
 namespace Electro\App\Abstraction\Server;
 
-use Electro\App\Abstraction\json\BaseJsonInterface;
+use Electro\App\Abstraction\Json\BaseJsonInterface;
 use Electro\App\Abstraction\View\TemplateEngineInterface;
 
 interface ResponseInterface

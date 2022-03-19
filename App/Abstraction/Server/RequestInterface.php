@@ -75,7 +75,7 @@ interface RequestInterface
 
     /**
      * @return stdClass
-     * get json decoded body
+     * get Json decoded body
      */
     public function jsonBody() : stdClass;
 
