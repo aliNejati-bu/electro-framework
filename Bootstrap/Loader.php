@@ -16,7 +16,7 @@ class Loader
             require_once $file; // include if file exists.
         });
         self::loadDIC();
-
+        require_once DicHandler::get("App_path").DIRECTORY_SEPARATOR."Helpers".DIRECTORY_SEPARATOR."helpers.php";
     }
 
     public static function loadDIC()

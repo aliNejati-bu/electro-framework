@@ -11,9 +11,9 @@ class Tester
 {
     public static function main()
     {
-        DicHandler::get(ConfigServiceInterface::class)->addScope("app");
-        var_dump(DicHandler::get(ConfigServiceInterface::class)->getConfig("app","app_url"));
-        var_dump(DicHandler::get(ConfigServiceInterface::class)->getConfig("app","app_url"));
-        var_dump(DicHandler::get(ConfigServiceInterface::class)->getConfig("app","app_url"));
+        DIC()->get(ConfigServiceInterface::class)->addScope("app");
+        var_dump(getContainer(ConfigServiceInterface::class)->getConfig("app","app_url"));
+        var_dump(getContainer(ConfigServiceInterface::class)->getConfig("app","app_url"));
+        var_dump(getContainer(ConfigServiceInterface::class)->getConfig("app","app_url"));
     }
 }
