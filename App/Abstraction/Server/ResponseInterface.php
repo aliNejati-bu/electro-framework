@@ -4,6 +4,7 @@ namespace Electro\App\Abstraction\Server;
 
 use Electro\App\Abstraction\Json\BaseJsonInterface;
 use Electro\App\Abstraction\View\TemplateEngineInterface;
+use Electro\App\Exceptions\Server\CanNotDoubleSendResponseException;
 
 interface ResponseInterface
 {
@@ -16,10 +17,10 @@ interface ResponseInterface
 
 
     /**
-     * @param array $header array of headers
+     * @param array $headers array of headers
      * @return ResponseInterface
      */
-    public function addHeaders(array $header): ResponseInterface;
+    public function addHeaders(array $headers): ResponseInterface;
 
 
     /**
@@ -41,13 +42,15 @@ interface ResponseInterface
     public function json(BaseJsonInterface|array $body): ResponseInterface;
 
     /**
-     * @param string|array|BaseJsonInterface|TemplateEngineInterface $body
+     * send and lock the response
+     * @param string|array|BaseJsonInterface|TemplateEngineInterface|null $body
      * @return ResponseInterface
      */
-    public function send(string|array|BaseJsonInterface|TemplateEngineInterface $body): ResponseInterface;
+    public function send(string|array|BaseJsonInterface|TemplateEngineInterface $body = null): ResponseInterface;
 
     /**
      * @return bool
+     *  @throws CanNotDoubleSendResponseException
      */
     public function end(): bool;
 
@@ -66,7 +69,7 @@ interface ResponseInterface
      * @return ResponseInterface
      * set cookie
      */
-    public function cookie(string $name,string $value,int $lifetime = 3600,array $options = []): ResponseInterface;
+    public function cookie(string $name, string $value, int $lifetime = 3600, array $options = []): ResponseInterface;
 
 
     /**
@@ -75,6 +78,20 @@ interface ResponseInterface
      * @param array $param
      * @return ResponseInterface
      */
-    public function session(string $name, string $value,array $param): ResponseInterface;
+    public function session(string $name, string $value, array $param): ResponseInterface;
 
+    /**
+     * @return bool if response has body true
+     */
+    public function isIsLock(): bool;
+
+    /**
+     * @return bool is response are TemplateEngineInterface true
+     */
+    public function isIsView(): bool;
+
+
+    public function body(string $body): ResponseInterface;
+
+    public function isIsEnded(): bool;
 }

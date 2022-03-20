@@ -53,7 +53,7 @@ class Request implements RequestInterface
      */
     #[Pure] public function post(?string $name = null): string|null|array
     {
-        if (is_null($name)){
+        if (is_null($name)) {
             return $this->posts();
         }
         return $this->posts()[$name];
@@ -64,7 +64,7 @@ class Request implements RequestInterface
      */
     #[Pure] public function header(?string $name = null): string|null|array
     {
-        if (is_null($name)){
+        if (is_null($name)) {
             return $this->headers();
         }
         return $this->headers()[$name];
@@ -75,7 +75,7 @@ class Request implements RequestInterface
      */
     #[Pure] public function get(?string $name = null): string|null|array
     {
-        if (is_null($name)){
+        if (is_null($name)) {
             return $this->gets();
         }
         return $this->gets()[$name];
@@ -86,7 +86,7 @@ class Request implements RequestInterface
      */
     #[Pure] public function cookie(?string $name = null): string|null|array
     {
-        if (is_null($name)){
+        if (is_null($name)) {
             return $this->cookies();
         }
         return $this->cookies()[$name];
@@ -97,7 +97,7 @@ class Request implements RequestInterface
      */
     #[Pure] public function session(?string $name = null): string|null|array
     {
-        if (is_null($name)){
+        if (is_null($name)) {
             return $this->sessions();
         }
         return $this->sessions()[$name];
@@ -108,20 +108,9 @@ class Request implements RequestInterface
      */
     public function jsonBody(): stdClass|null
     {
-        $contentType = "*";
-        if (!is_null($this->header("Content-Type"))){
-            $contentType = $this->header("Content-Type");
-        }elseif (!is_null($this->header("content-Type"))){
-            $contentType = $this->header("content-Type");
-        }elseif ($this->header("CONTENT-TYPE")){
-            $contentType = $this->header("CONTENT-TYPE");
-        }elseif (!is_null($this->header("content-type"))){
-            $contentType = $this->header("content-type");
-        }
-        $contentType = strtolower($contentType);
-        if (str_contains($contentType,"application/json")){
+        if ($this->isJsonSended()) {
             $content = file_get_contents('php://input');
-            if (!isJson($content)){
+            if (!isJson($content)) {
                 return null;
             }
             return json_decode($content);
@@ -134,6 +123,29 @@ class Request implements RequestInterface
      */
     public function body(): stdClass
     {
-        return convertToObject($_REQUEST);
+        if (!$this->isJsonSended()){
+            return convertToObject($_REQUEST);
+        }else{
+            return $this->jsonBody();
+        }
+    }
+
+    private function isJsonSended(): bool
+    {
+        $contentType = "*";
+        if (!is_null($this->header("Content-Type"))) {
+            $contentType = $this->header("Content-Type");
+        } elseif (!is_null($this->header("content-Type"))) {
+            $contentType = $this->header("content-Type");
+        } elseif ($this->header("CONTENT-TYPE")) {
+            $contentType = $this->header("CONTENT-TYPE");
+        } elseif (!is_null($this->header("content-type"))) {
+            $contentType = $this->header("content-type");
+        }
+        $contentType = strtolower($contentType);
+        if (str_contains($contentType, "application/json")) {
+            return true;
+        }
+        return false;
     }
 }

@@ -14,10 +14,16 @@ class Loader
             $file = ELECTRO_BASE . DIRECTORY_SEPARATOR .
                 str_replace("\\", DIRECTORY_SEPARATOR, $class) . // replace \ in class namespace to DIRECTORY_SEPARATOR
                 ".php";
-            require_once $file; // include if file exists.
+            try {
+                @require_once $file; // include if file exists.
+            } catch (\Throwable $exception) {
+                if (!str_contains($class, "Symfony")) {
+                    throw $exception;
+                }
+            }
         });
         self::loadDIC();
-        require_once DicHandler::get("App_path").DIRECTORY_SEPARATOR."Helpers".DIRECTORY_SEPARATOR."helpers.php";
+        require_once DicHandler::get("App_path") . DIRECTORY_SEPARATOR . "Helpers" . DIRECTORY_SEPARATOR . "helpers.php";
     }
 
     public static function loadDIC()
