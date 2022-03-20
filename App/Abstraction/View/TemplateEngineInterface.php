@@ -8,9 +8,10 @@ interface TemplateEngineInterface
 
     /**
      * @param string $name name of view
+     * @param array $params parameters passed to view
      * @param string $path path of views directory (relative from root directory)
      */
-    public function __construct(string $name, string $path = "views");
+    public function __construct(string $name, array $params, string $path = "views");
 
     /**
      * @param string $key variable name in view
@@ -18,15 +19,17 @@ interface TemplateEngineInterface
      * @return void
      * add parameter to view
      */
-    public function addParam(string $key, string $value): void;
+    public function addParam(string $key, string $value): TemplateEngineInterface;
 
 
     /**
+     * get string of returned view
      * @param array $params parameters passed to view
      * @param array $options
+     * @return string
      * for render a view
      */
-    public function render(array $params, array $options = []): void;
+    public function render(array $params = [], array $options = []): string;
 
 
     /**

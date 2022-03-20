@@ -26,5 +26,10 @@ class Tester
             'e5' => array('nume' => 'Vasile', 'prenume' => 'Mihai', 'sex' => 'm', 'varsta' => 25)
         );
         var_dump($clasa);*/
+
+        ob_start();
+        echo "ok";
+        echo ob_get_clean();
+
     }
 }

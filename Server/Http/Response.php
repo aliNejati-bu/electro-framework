@@ -6,6 +6,7 @@ use Electro\App\Abstraction\Json\BaseJsonInterface;
 use Electro\App\Abstraction\Server\ResponseInterface;
 use Electro\App\Abstraction\View\TemplateEngineInterface;
 use Electro\App\Exceptions\Server\CanNotDoubleSendResponseException;
+use Electro\App\Exceptions\Server\HeadersHasSentException;
 
 class Response implements \Electro\App\Abstraction\Server\ResponseInterface
 {
@@ -14,7 +15,7 @@ class Response implements \Electro\App\Abstraction\Server\ResponseInterface
      * added headers store here
      * @var array
      */
-    private array $_headers  = [];
+    private array $_headers = [];
 
     /**
      * status code store here
@@ -44,6 +45,14 @@ class Response implements \Electro\App\Abstraction\Server\ResponseInterface
     private bool $is_ended = false;
 
     /**
+     * @var array saved sessions
+     */
+    private array $_sessions = [];
+
+    private string $_body = '';
+
+
+    /**
      * @inheritDoc
      */
     public function addHeader(string $key, string $value): ResponseInterface
@@ -57,8 +66,8 @@ class Response implements \Electro\App\Abstraction\Server\ResponseInterface
      */
     public function addHeaders(array $headers): ResponseInterface
     {
-        foreach ($headers as $name=>$header)
-            $this->addHeader($name,$header);
+        foreach ($headers as $name => $header)
+            $this->addHeader($name, $header);
         return $this;
     }
 
@@ -89,9 +98,9 @@ class Response implements \Electro\App\Abstraction\Server\ResponseInterface
      */
     public function json(BaseJsonInterface|array $body): ResponseInterface
     {
-        if (!$this->isIsLock()){
+        if (!$this->isIsLock()) {
             $this->is_lock = true;
-            $this->addHeader("Content-Type","application/json")->body(json_encode($body))->send();
+            $this->addHeader("Content-Type", "application/json")->body(json_encode($body))->send();
         }
         return $this;
     }
@@ -101,16 +110,17 @@ class Response implements \Electro\App\Abstraction\Server\ResponseInterface
      */
     public function send(TemplateEngineInterface|BaseJsonInterface|array|string $body = null): ResponseInterface
     {
-        if (!$this->is_lock){
+        if (!$this->is_lock) {
             if (is_null($body)) {
                 $this->is_lock = true;
                 return $this;
             } elseif ($body instanceof TemplateEngineInterface) {
                 $this->view($body);
-            } elseif (is_string($body)) {
-                $this->body($body);
-            } else {
+            } elseif ($body instanceof BaseJsonInterface || is_array($body)) {
                 $this->json($body);
+            } else {
+                $this->body($body);
+                $this->is_lock = true;
             }
         }
         return $this;
@@ -121,12 +131,27 @@ class Response implements \Electro\App\Abstraction\Server\ResponseInterface
      */
     public function end(): bool
     {
-        if ($this->is_ended){
+        if ($this->is_ended) {
             throw new CanNotDoubleSendResponseException();
-        }else{
-            foreach ($this->_headers as $key=>$header){
-                header("{$key}: {$header}");
+        } else {
+            if (!headers_sent()) {
+                foreach ($this->_headers as $key => $header) {
+                    header("{$key}: {$header}");
+                }
+                foreach ($this->_sessions as $name => $value) {
+                    $_SESSION[$name] = $value;
+                }
+            } else {
+                throw new HeadersHasSentException();
             }
+            $this->is_ended = true;
+            if ($this->is_view) {
+                $result = $this->_view->render();
+                echo $result;
+                return true;
+            }
+            echo $this->_body;
+            return true;
         }
     }
 
@@ -135,23 +160,20 @@ class Response implements \Electro\App\Abstraction\Server\ResponseInterface
      */
     public function redirect(string $url): ResponseInterface
     {
-        // TODO: Implement redirect() method.
+        if (!$this->is_lock) {
+            $this->addHeader("Location", $url)->send();
+        }
+        return $this;
     }
+
 
     /**
      * @inheritDoc
      */
-    public function cookie(string $name, string $value, int $lifetime = 3600, array $options = []): ResponseInterface
+    public function session(string $name, string $value): ResponseInterface
     {
-        // TODO: Implement cookie() method.
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function session(string $name, string $value, array $param): ResponseInterface
-    {
-        // TODO: Implement session() method.
+        $this->_sessions[$name] = $value;
+        return $this;
     }
 
     /**
@@ -172,7 +194,10 @@ class Response implements \Electro\App\Abstraction\Server\ResponseInterface
 
     public function body(string $body): ResponseInterface
     {
-        // TODO: Implement body() method.
+        if (!$this->is_lock) {
+            $this->_body .= $body;
+        }
+        return $this;
     }
 
     /**
@@ -181,5 +206,15 @@ class Response implements \Electro\App\Abstraction\Server\ResponseInterface
     public function isIsEnded(): bool
     {
         return $this->is_ended;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function cookie(string $name, string $value, int $lifetime = 3600, string $path = "", string $domain = "", bool $secure = false, bool $httponly = false, array $options = []): ResponseInterface
+    {
+        setcookie($name, $value, $lifetime, $path, $domain, $secure, $httponly);
+        return $this;
     }
 }

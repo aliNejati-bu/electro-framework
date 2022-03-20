@@ -5,6 +5,7 @@ namespace Electro\App\Abstraction\Server;
 use Electro\App\Abstraction\Json\BaseJsonInterface;
 use Electro\App\Abstraction\View\TemplateEngineInterface;
 use Electro\App\Exceptions\Server\CanNotDoubleSendResponseException;
+use Electro\App\Exceptions\Server\HeadersHasSentException;
 
 interface ResponseInterface
 {
@@ -50,7 +51,8 @@ interface ResponseInterface
 
     /**
      * @return bool
-     *  @throws CanNotDoubleSendResponseException
+     * @throws CanNotDoubleSendResponseException
+     * @throws HeadersHasSentException
      */
     public function end(): bool;
 
@@ -69,16 +71,16 @@ interface ResponseInterface
      * @return ResponseInterface
      * set cookie
      */
-    public function cookie(string $name, string $value, int $lifetime = 3600, array $options = []): ResponseInterface;
+    public function cookie(string $name, string $value, int $lifetime = 3600, string $path = "", string $domain = "", bool $secure = false,
+                           bool   $httponly = false, array $options = []): ResponseInterface;
 
 
     /**
      * @param string $name
      * @param string $value
-     * @param array $param
      * @return ResponseInterface
      */
-    public function session(string $name, string $value, array $param): ResponseInterface;
+    public function session(string $name, string $value): ResponseInterface;
 
     /**
      * @return bool if response has body true
