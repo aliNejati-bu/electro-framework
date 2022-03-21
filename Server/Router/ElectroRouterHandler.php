@@ -90,9 +90,9 @@ class ElectroRouterHandler implements \Electro\App\Abstraction\Server\Router\Rou
     private array $_routedMiddleware;
 
     /**
-     * @var callable
+     * @var callable|null
      */
-    private $_404Handler;
+    private $_404Handler = null;
 
     /**
      * @inheritDoc
@@ -148,8 +148,8 @@ class ElectroRouterHandler implements \Electro\App\Abstraction\Server\Router\Rou
                 }
             }
         }
-        if (is_callable($handler)) {
-            throw new HandlerIsNotCallable($handler);
+        if (!is_callable($handler)) {
+            throw new HandlerIsNotCallable((string)$handler);
         }
         return $handler;
     }
@@ -300,11 +300,13 @@ class ElectroRouterHandler implements \Electro\App\Abstraction\Server\Router\Rou
      */
     public function run(): void
     {
-        try{
+        try {
             $dispatcher = new Dispatcher($this->routeCollector->getData());
             $dispatcher->dispatch($this->request->getMethode(), parse_url($this->request->getRequestUri(), PHP_URL_PATH));
-        }catch (HttpRouteNotFoundException $exception){
-            call_user_func($this->_404Handler,$this->request,$this->response);
+        } catch (HttpRouteNotFoundException $exception) {
+            if (!is_null($this->_404Handler))
+                call_user_func($this->_404Handler, $this->request, $this->response);
+            throw $exception;
         }
     }
 

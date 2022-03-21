@@ -11,7 +11,7 @@ interface TemplateEngineInterface
      * @param array $params parameters passed to view
      * @param string $path path of views directory (relative from root directory)
      */
-    public function __construct(string $name, array $params,string $projectBaseDirectory, string $path = "views",string $prifix = ".electro.php");
+    public function __construct(string $name, array $params,string $projectBaseDirectory, string $path = "Views",string $prifix = ".electro.php");
 
     /**
      * @param string $key variable name in view

@@ -2,6 +2,7 @@
     "name": "alinejati-bu/electro-framework",
     "type": "project",
     "description": "a starter framework",
+    "version": "1.0.0",
     "license": "MIT",
     "authors": [
         {

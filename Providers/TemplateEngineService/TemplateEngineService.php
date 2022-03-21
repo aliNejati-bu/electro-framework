@@ -26,11 +26,11 @@ class TemplateEngineService implements \Electro\App\Abstraction\View\TemplateEng
     /**
      * @inheritDoc
      */
-    public function __construct(string $name, array $params, string $projectBaseDirectory, string $path = "views", string $prifix = ".electro.php")
+    public function __construct(string $name, array $params, string $projectBaseDirectory, string $path = "Views", string $prifix = ".electro.php")
     {
         $this->params = $params;
         $this->name = $name;
-        $path = $projectBaseDirectory . PHP_EOL . $path . DIRECTORY_SEPARATOR . $name . $prifix;
+        $path = $projectBaseDirectory . DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR . $name . $prifix;
         $this->path = $path;
     }
 

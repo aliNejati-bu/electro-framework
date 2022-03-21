@@ -7,7 +7,7 @@ use Electro\App\Abstraction\Server\RequestInterface;
 use Electro\App\Abstraction\Server\ResponseInterface;
 use Electro\App\Abstraction\Server\Router\RouterInterface;
 
-class ServerService implements \Electro\App\Abstraction\Server\ServerService
+class ServerService implements \Electro\App\Abstraction\Server\ServerServiceInterface
 {
 
     /**

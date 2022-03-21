@@ -4,7 +4,7 @@ namespace Electro\App\Abstraction\Server;
 
 use Electro\App\Abstraction\Server\Router\RouterInterface;
 
-interface ServerService
+interface ServerServiceInterface
 {
 
     /**

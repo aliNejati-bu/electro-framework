@@ -3,6 +3,7 @@
 namespace Bootstrap;
 
 use Electro\App\Abstraction\Config\ConfigServiceInterface;
+use Electro\App\Abstraction\Server\ServerServiceInterface;
 use Electro\Bootstrap\DicHandler;
 use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PrettyPageHandler;
@@ -32,6 +33,9 @@ class Loader
         getContainer(ConfigServiceInterface::class)->addScope('app');
 
         self::addErrorReporter();
+
+        getContainer(ServerServiceInterface::class)->start();
+
     }
 
     public static function loadDIC()

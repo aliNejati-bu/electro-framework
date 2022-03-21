@@ -12,32 +12,6 @@ class Tester
 {
     public static function main()
     {
-        /*DIC()->get(ConfigServiceInterface::class)->addScope("app");
-        var_dump(getContainer(ConfigServiceInterface::class)->getConfig("app","app_url"));
-        var_dump(getContainer(ConfigServiceInterface::class)->getConfig("app","app_url"));
-        var_dump(getContainer(ConfigServiceInterface::class)->getConfig("app","app_url"));
-        var_dump(file_get_contents('php://input'));*/
-        /*$clasa = (object) array(
-            'e1' => array('nume' => 'Nitu', 'prenume' => 'Andrei', 'sex' => 'm', 'varsta' => 23),
-            'e2' => array('nume' => 'Nae', 'prenume' => 'Ionel', 'sex' => 'm', 'varsta' => 27),
-            'e3' => array('nume' => 'Noman', 'prenume' => 'Alice', 'sex' => 'f', 'varsta' => 22),
-            'e4' => array('nume' => 'Geangos', 'prenume' => 'Bogdan', 'sex' => 'm', 'varsta' => 23),
-            'e5' => array('nume' => 'Vasile', 'prenume' => 'Mihai', 'sex' => 'm', 'varsta' => 25)
-        );
-        var_dump($clasa);*/
-
-        try{
-            $r = new RouteCollector();
-            if (is_callable([new App(), "hkj"])) {
-                echo "calleble";
-            }
-            $r->get("/test", [new App(), "ee"]);
-            $dispatcher = new Dispatcher($r->getData());
-            $response = $dispatcher->dispatch($_SERVER['REQUEST_METHOD'], parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
-        }catch (\Throwable $e){
-
-        }
-        echo parse_url($_SERVER['REQUEST_URI'],PHP_URL_PATH);
 
     }
 }
