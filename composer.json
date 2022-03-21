@@ -1,6 +1,7 @@
 {
     "name": "alinejati-bu/electro-framework",
     "type": "project",
+    "description": "a starter framework",
     "authors": [
         {
             "name": "aliNejati-bu",
@@ -9,6 +10,7 @@
     ],
     "require": {
         "php-di/php-di": "^6.3",
-        "filp/whoops": "^2.14"
+        "filp/whoops": "^2.14",
+        "phroute/phroute": "^2.1"
     }
 }
