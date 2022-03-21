@@ -10,11 +10,12 @@ interface MiddlewareCoreInterface
     /**
      * for register middleware
      * @param string $name
-     * @param MiddlewareInterface $middleware
-     * @throws InvalidMiddlewareException
+     * @param string $middleware
      * @return void
+     * @throws InvalidMiddlewareException
+     * @throws MiddlewareNotFoundException
      */
-    public function RegisterMiddleWare(string $name, MiddlewareInterface $middleware): void;
+    public function RegisterMiddleWare(string $name, string $middleware): void;
 
     /**
      * @param array $middlewares for run middlewares
@@ -23,7 +24,7 @@ interface MiddlewareCoreInterface
      * @return bool
      * @throws MiddlewareNotFoundException
      */
-    public function runMiddleware(array $middlewares,RequestInterface $request,ResponseInterface $response): bool;
+    public function runMiddleware(array $middlewares, RequestInterface $request, ResponseInterface $response): bool;
 
     /**
      * @param $name
