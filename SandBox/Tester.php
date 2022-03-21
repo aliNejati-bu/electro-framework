@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Electro\SandBox;
 
-use Electro\App\Abstraction\Config\ConfigServiceInterface;
-use Electro\App\Exceptions\Config\ConfigNotFoundedException;
-use Electro\Bootstrap\DicHandler;
-use Whoops\Handler\PrettyPageHandler;
+use Phroute\Phroute\Dispatcher;
+use Phroute\Phroute\RouteCollector;
+
 
 class Tester
 {
@@ -27,9 +26,18 @@ class Tester
         );
         var_dump($clasa);*/
 
-        ob_start();
-        echo "ok";
-        echo ob_get_clean();
+        try{
+            $r = new RouteCollector();
+            if (is_callable([new App(), "hkj"])) {
+                echo "calleble";
+            }
+            $r->get("/test", [new App(), "ee"]);
+            $dispatcher = new Dispatcher($r->getData());
+            $response = $dispatcher->dispatch($_SERVER['REQUEST_METHOD'], parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+        }catch (\Throwable $e){
+
+        }
+        echo parse_url($_SERVER['REQUEST_URI'],PHP_URL_PATH);
 
     }
 }

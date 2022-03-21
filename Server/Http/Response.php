@@ -3,6 +3,7 @@
 namespace Electro\Server\Http;
 
 use Electro\App\Abstraction\Json\BaseJsonInterface;
+use Electro\App\Abstraction\Server\RequestInterface;
 use Electro\App\Abstraction\Server\ResponseInterface;
 use Electro\App\Abstraction\View\TemplateEngineInterface;
 use Electro\App\Exceptions\Server\CanNotDoubleSendResponseException;
@@ -50,6 +51,7 @@ class Response implements \Electro\App\Abstraction\Server\ResponseInterface
     private array $_sessions = [];
 
     private string $_body = '';
+
 
 
     /**
@@ -145,6 +147,7 @@ class Response implements \Electro\App\Abstraction\Server\ResponseInterface
                 throw new HeadersHasSentException();
             }
             $this->is_ended = true;
+            http_response_code($this->_statusCode);
             if ($this->is_view) {
                 $result = $this->_view->render();
                 echo $result;
@@ -214,7 +217,9 @@ class Response implements \Electro\App\Abstraction\Server\ResponseInterface
      */
     public function cookie(string $name, string $value, int $lifetime = 3600, string $path = "", string $domain = "", bool $secure = false, bool $httponly = false, array $options = []): ResponseInterface
     {
-        setcookie($name, $value, $lifetime, $path, $domain, $secure, $httponly);
+        if (!$this->is_lock)
+            setcookie($name, $value, $lifetime, $path, $domain, $secure, $httponly);
         return $this;
     }
+
 }

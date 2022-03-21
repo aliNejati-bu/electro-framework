@@ -74,11 +74,25 @@ interface RequestInterface
     public function session(?string $name = null): string|null|array;
 
     /**
-     * @return stdClass
+     * @return stdClass|null get Json decoded body
      * get Json decoded body
      */
     public function jsonBody() : stdClass|null;
 
+    /**
+     * @return stdClass
+     */
     public function body():stdClass;
+
+
+    /**
+     * @return string
+     */
+    public function getMethode():string;
+
+    /**
+     * @return string
+     */
+    public function getRequestUri():string;
 
 }

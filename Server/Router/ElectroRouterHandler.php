@@ -1,11 +1,37 @@
 <?php
+declare(strict_types=1);
 
 namespace Electro\Server\Router;
 
+use Electro\App\Abstraction\Server\MiddlewareCoreInterface;
+use Electro\App\Abstraction\Server\RequestInterface;
+use Electro\App\Abstraction\Server\ResponseInterface;
 use Electro\App\Abstraction\Server\Router\RouterInterface;
+use Electro\App\Exceptions\Server\ControllerMethodNotFound;
+use Electro\App\Exceptions\Server\ControllerNotFoundException;
+use Electro\App\Exceptions\Server\HandlerIsNotCallable;
+use Electro\App\Exceptions\Server\ResponseLockedBeforeHandleController;
+use Phroute\Phroute\Dispatcher;
+use Phroute\Phroute\Exception\HttpRouteNotFoundException;
+use Phroute\Phroute\RouteCollector;
 
 class ElectroRouterHandler implements \Electro\App\Abstraction\Server\Router\RouterInterface
 {
+
+    /**
+     * @var RouteCollector
+     */
+    private RouteCollector $routeCollector;
+
+    /**
+     * @var RequestInterface
+     */
+    private RequestInterface $request;
+
+    /**
+     * @var ResponseInterface
+     */
+    private ResponseInterface $response;
 
 
     /**
@@ -42,7 +68,7 @@ class ElectroRouterHandler implements \Electro\App\Abstraction\Server\Router\Rou
 
 
     /**
-     * @var string for sor prefix of routes
+     * @var string for store prefix of routes
      */
     private string $_prefix = "";
 
@@ -52,19 +78,137 @@ class ElectroRouterHandler implements \Electro\App\Abstraction\Server\Router\Rou
     private array $globalMiddlewares = [];
 
     /**
+     * @var string
+     */
+    private string $_namespace = "";
+
+    /**
+     * @var MiddlewareCoreInterface
+     */
+    private MiddlewareCoreInterface $middlewareCore;
+
+    private array $_routedMiddleware;
+
+    /**
+     * @var callable
+     */
+    private $_404Handler;
+
+    /**
+     * @inheritDoc
+     */
+    public function __construct(ResponseInterface $response, RequestInterface $request, MiddlewareCoreInterface $middlewareCore)
+    {
+        $this->routeCollector = new RouteCollector();
+        $this->response = $response;
+        $this->request = $request;
+        $this->middlewareCore = $middlewareCore;
+
+    }
+
+    /**
+     * @param string $class
+     * @return mixed
+     * @throws ControllerNotFoundException
+     */
+    private function searchClass(string $class): mixed
+    {
+        if (class_exists($class)) {
+            if (isset($this->_controllerInstanceCache[$class])) {
+                return $this->_controllerInstanceCache[$class];
+            }
+            $classInstance = new $class;
+            $this->_controllerInstanceCache[$class] = $classInstance;
+            return $classInstance;
+        } else {
+            throw new ControllerNotFoundException($class);
+        }
+    }
+
+    /**
+     * this method convert 'Controller@method' to callable
+     * @param callable|string $handler
+     * @return callable
+     * @throws ControllerMethodNotFound
+     * @throws ControllerNotFoundException
+     * @throws HandlerIsNotCallable
+     */
+    private function prepareHandler(callable|string $handler): callable
+    {
+        // check for is controller
+        if (is_string($handler)) {
+            if (str_contains($handler, '@')) {
+                list($class, $method) = explode('@', $handler);
+                $class = $this->_namespace . "\\" . $class;
+                $classInstance = $this->searchClass($class);
+                if (method_exists($classInstance, $method)) {
+                    $handler = [$classInstance, $method];
+                } else {
+                    throw new ControllerMethodNotFound($class, $method);
+                }
+            }
+        }
+        if (is_callable($handler)) {
+            throw new HandlerIsNotCallable($handler);
+        }
+        return $handler;
+    }
+
+    /**
      * @inheritDoc
      */
     public function GET(string $pattern, callable|string $handler, string $name = "", array $middlewares = []): RouterInterface
     {
 
+        // prepare handler and convert controller pattern to callable
+        $handler = $this->prepareHandler($handler);
+
+        // get pattern if the name is not null convert to array with name and pattern
+        $pattern = $this->getPattern($name, $pattern);
+
+        $this->routeCollector->get($pattern, function () use ($middlewares, $handler) {
+            $middlewares = array_merge($middlewares, $this->globalMiddlewares);
+            $middlewareResult = $this->middlewareCore->runMiddleware($middlewares, $this->request, $this->response);
+            if (!$middlewareResult) {
+                return;
+            }
+            if ($this->response->isIsLock()) {
+                throw new ResponseLockedBeforeHandleController();
+            }
+            $params = [$this->request, $this->response];
+            $params = array_merge($params, func_get_args());
+            call_user_func_array($handler, $params);
+        });
+        return $this;
     }
+
 
     /**
      * @inheritDoc
      */
     public function POST(string $pattern, callable|string $handler, string $name = "", array $middlewares = []): RouterInterface
     {
-        // TODO: Implement POST() method.
+
+        // prepare handler and convert controller pattern to callable
+        $handler = $this->prepareHandler($handler);
+
+        // get pattern if the name is not null convert to array with name and pattern
+        $pattern = $this->getPattern($name, $pattern);
+
+        $this->routeCollector->post($pattern, function () use ($middlewares, $handler) {
+            $middlewares = array_merge($middlewares, $this->globalMiddlewares);
+            $middlewareResult = $this->middlewareCore->runMiddleware($middlewares, $this->request, $this->response);
+            if (!$middlewareResult) {
+                return;
+            }
+            if ($this->response->isIsLock()) {
+                throw new ResponseLockedBeforeHandleController();
+            }
+            $params = [$this->request, $this->response];
+            $params = array_merge($params, func_get_args());
+            call_user_func_array($handler, $params);
+        });
+        return $this;
     }
 
     /**
@@ -72,7 +216,27 @@ class ElectroRouterHandler implements \Electro\App\Abstraction\Server\Router\Rou
      */
     public function PUT(string $pattern, callable|string $handler, string $name = "", array $middlewares = []): RouterInterface
     {
-        // TODO: Implement PUT() method.
+
+        // prepare handler and convert controller pattern to callable
+        $handler = $this->prepareHandler($handler);
+
+        // get pattern if the name is not null convert to array with name and pattern
+        $pattern = $this->getPattern($name, $pattern);
+
+        $this->routeCollector->put($pattern, function () use ($middlewares, $handler) {
+            $middlewares = array_merge($middlewares, $this->globalMiddlewares);
+            $middlewareResult = $this->middlewareCore->runMiddleware($middlewares, $this->request, $this->response);
+            if (!$middlewareResult) {
+                return;
+            }
+            if ($this->response->isIsLock()) {
+                throw new ResponseLockedBeforeHandleController();
+            }
+            $params = [$this->request, $this->response];
+            $params = array_merge($params, func_get_args());
+            call_user_func_array($handler, $params);
+        });
+        return $this;
     }
 
     /**
@@ -80,7 +244,27 @@ class ElectroRouterHandler implements \Electro\App\Abstraction\Server\Router\Rou
      */
     public function PATCH(string $pattern, callable|string $handler, string $name = "", array $middlewares = []): RouterInterface
     {
-        // TODO: Implement PATCH() method.
+
+        // prepare handler and convert controller pattern to callable
+        $handler = $this->prepareHandler($handler);
+
+        // get pattern if the name is not null convert to array with name and pattern
+        $pattern = $this->getPattern($name, $pattern);
+
+        $this->routeCollector->patch($pattern, function () use ($middlewares, $handler) {
+            $middlewares = array_merge($middlewares, $this->globalMiddlewares);
+            $middlewareResult = $this->middlewareCore->runMiddleware($middlewares, $this->request, $this->response);
+            if (!$middlewareResult) {
+                return;
+            }
+            if ($this->response->isIsLock()) {
+                throw new ResponseLockedBeforeHandleController();
+            }
+            $params = [$this->request, $this->response];
+            $params = array_merge($params, func_get_args());
+            call_user_func_array($handler, $params);
+        });
+        return $this;
     }
 
     /**
@@ -88,7 +272,27 @@ class ElectroRouterHandler implements \Electro\App\Abstraction\Server\Router\Rou
      */
     public function DELETE(string $pattern, callable|string $handler, string $name = "", array $middlewares = []): RouterInterface
     {
-        // TODO: Implement DELETE() method.
+
+        // prepare handler and convert controller pattern to callable
+        $handler = $this->prepareHandler($handler);
+
+        // get pattern if the name is not null convert to array with name and pattern
+        $pattern = $this->getPattern($name, $pattern);
+
+        $this->routeCollector->delete($pattern, function () use ($middlewares, $handler) {
+            $middlewares = array_merge($middlewares, $this->globalMiddlewares);
+            $middlewareResult = $this->middlewareCore->runMiddleware($middlewares, $this->request, $this->response);
+            if (!$middlewareResult) {
+                return;
+            }
+            if ($this->response->isIsLock()) {
+                throw new ResponseLockedBeforeHandleController();
+            }
+            $params = [$this->request, $this->response];
+            $params = array_merge($params, func_get_args());
+            call_user_func_array($handler, $params);
+        });
+        return $this;
     }
 
     /**
@@ -96,15 +300,31 @@ class ElectroRouterHandler implements \Electro\App\Abstraction\Server\Router\Rou
      */
     public function run(): void
     {
-        // TODO: Implement run() method.
+        try{
+            $dispatcher = new Dispatcher($this->routeCollector->getData());
+            $dispatcher->dispatch($this->request->getMethode(), parse_url($this->request->getRequestUri(), PHP_URL_PATH));
+        }catch (HttpRouteNotFoundException $exception){
+            call_user_func($this->_404Handler,$this->request,$this->response);
+        }
     }
 
     /**
      * @inheritDoc
+     * @throws HandlerIsNotCallable
      */
     public function group(string $prefix, callable $handler, array $middlewares = []): RouterInterface
     {
-        // TODO: Implement group() method.
+        $oldPreFix = $this->_prefix;
+        $oldMiddlewares = $this->globalMiddlewares;
+        $this->_prefix = $oldPreFix . $prefix;
+        $this->globalMiddlewares = array_merge($oldMiddlewares, $middlewares);
+        if (!is_callable($handler)) {
+            throw new HandlerIsNotCallable((string)$handler);
+        }
+        call_user_func($handler, $this);
+        $this->_prefix = $oldPreFix;
+        $this->globalMiddlewares = $oldMiddlewares;
+        return $this;
     }
 
     /**
@@ -112,14 +332,56 @@ class ElectroRouterHandler implements \Electro\App\Abstraction\Server\Router\Rou
      */
     public function namespace(string $namespace): RouterInterface
     {
-        // TODO: Implement namespace() method.
+        $this->_namespace = $namespace;
+        return $this;
     }
 
     /**
      * @inheritDoc
      */
-    public function middleware(string $path, array|string $middlewares): RouterInterface
+    public function middleware(string $path, array $middlewares): RouterInterface
     {
-        // TODO: Implement middleware() method.
+        $path = $this->_prefix . $path;
+        if (isset($this->_routedMiddleware[$path])) {
+            $this->_routedMiddleware[$path] = array_merge($this->_routedMiddleware[$path], $middlewares);
+        } else {
+            $this->_routedMiddleware[$path] = $middlewares;
+        }
+        return $this;
+    }
+
+    /**
+     * if the name is not null convert to array with name and pattern and if empty return string of pattern
+     * @param string $name
+     * @param string $pattern
+     * @return string|string[]
+     */
+    private function getPattern(string $name, string $pattern): string|array
+    {
+        if (empty($name)) {
+            $pattern = $this->_prefix . $pattern;
+        } else {
+            $pattern = [$this->_prefix . $pattern, $name];
+        }
+        return $pattern;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function addGlobalMiddleware(array $middlewares): RouterInterface
+    {
+        $this->globalMiddlewares = array_merge($this->globalMiddlewares, $middlewares);
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function set404(callable|string $handler): RouterInterface
+    {
+        $handler = $this->prepareHandler($handler);
+        $this->_404Handler = $handler;
+        return $this;
     }
 }

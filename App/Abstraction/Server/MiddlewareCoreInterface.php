@@ -18,9 +18,12 @@ interface MiddlewareCoreInterface
 
     /**
      * @param array $middlewares for run middlewares
+     * @param RequestInterface $request
+     * @param ResponseInterface $response
+     * @return bool
      * @throws MiddlewareNotFoundException
      */
-    public function runMiddleware(array $middlewares): bool;
+    public function runMiddleware(array $middlewares,RequestInterface $request,ResponseInterface $response): bool;
 
     /**
      * @param $name

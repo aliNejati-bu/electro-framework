@@ -123,9 +123,9 @@ class Request implements RequestInterface
      */
     public function body(): stdClass
     {
-        if (!$this->isJsonSended()){
+        if (!$this->isJsonSended()) {
             return convertToObject($_REQUEST);
-        }else{
+        } else {
             return $this->jsonBody();
         }
     }
@@ -147,5 +147,21 @@ class Request implements RequestInterface
             return true;
         }
         return false;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getMethode(): string
+    {
+        return $_SERVER['REQUEST_METHOD'];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getRequestUri(): string
+    {
+       return $_SERVER['REQUEST_URI'];
     }
 }
