@@ -47,3 +47,9 @@ function convertToObject($array) {
     }
     return $object;
 }
+
+# view
+function view(string $name,array $param): \Electro\Providers\TemplateEngineService\TemplateEngineService
+{
+    return new Electro\Providers\TemplateEngineService\TemplateEngineService($name,$param,getContainer("App_path"));
+}

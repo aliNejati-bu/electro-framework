@@ -303,9 +303,10 @@ class ElectroRouterHandler implements \Electro\App\Abstraction\Server\Router\Rou
             $dispatcher = new Dispatcher($this->routeCollector->getData());
             $dispatcher->dispatch($this->request->getMethode(), parse_url($this->request->getRequestUri(), PHP_URL_PATH));
         } catch (HttpRouteNotFoundException $exception) {
-            if (!is_null($this->_404Handler))
+            if (is_callable($this->_404Handler))
                 call_user_func($this->_404Handler, $this->request, $this->response);
-            throw $exception;
+            else
+                throw $exception;
         }
     }
 

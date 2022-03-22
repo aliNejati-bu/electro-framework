@@ -64,6 +64,8 @@ class ServerService implements \Electro\App\Abstraction\Server\ServerServiceInte
         // create helper variable for router file
         $router = $this->router;
 
+        $router->namespace("Electro\Misc\Controller");
+
         // load router file
         require_once $this->projectRoot . DIRECTORY_SEPARATOR . "Misc" . DIRECTORY_SEPARATOR . "Router" . DIRECTORY_SEPARATOR . "web.php";
 

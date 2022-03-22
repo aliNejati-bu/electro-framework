@@ -30,6 +30,7 @@ class TemplateEngineService implements \Electro\App\Abstraction\View\TemplateEng
     {
         $this->params = $params;
         $this->name = $name;
+        $name = str_replace(">",DIRECTORY_SEPARATOR,$name);
         $path = $projectBaseDirectory . DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR . $name . $prifix;
         $this->path = $path;
     }
