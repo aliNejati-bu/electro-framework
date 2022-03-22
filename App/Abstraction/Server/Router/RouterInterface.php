@@ -135,4 +135,11 @@ interface RouterInterface
      */
     public function set404(callable|string $handler): RouterInterface;
 
+
+    /**
+     * @param string $name
+     * @param array|null $params
+     * @return string
+     */
+    public function route(string $name, array $params = null):string;
 }

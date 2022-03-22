@@ -165,8 +165,7 @@ class ElectroRouterHandler implements \Electro\App\Abstraction\Server\Router\Rou
 
         // get pattern if the name is not null convert to array with name and pattern
         $pattern = $this->getPattern($name, $pattern);
-
-        $this->routeCollector->get($pattern, function () use ($middlewares, $handler) {
+        $this->routeCollector->get($pattern, function (...$args) use ($middlewares, $handler) {
             $middlewares = array_merge($middlewares, $this->globalMiddlewares);
             $middlewareResult = $this->middlewareCore->runMiddleware($middlewares, $this->request, $this->response);
             if (!$middlewareResult) {
@@ -175,8 +174,8 @@ class ElectroRouterHandler implements \Electro\App\Abstraction\Server\Router\Rou
             if ($this->response->isIsLock()) {
                 throw new ResponseLockedBeforeHandleController();
             }
-            $params = [$this->request, $this->response];
-            $params = array_merge($params, func_get_args());
+            $params = ["req" => $this->request, "res" => $this->response];
+            $params = array_merge($params, $args);
             call_user_func_array($handler, $params);
         });
         return $this;
@@ -195,7 +194,7 @@ class ElectroRouterHandler implements \Electro\App\Abstraction\Server\Router\Rou
         // get pattern if the name is not null convert to array with name and pattern
         $pattern = $this->getPattern($name, $pattern);
 
-        $this->routeCollector->post($pattern, function () use ($middlewares, $handler) {
+        $this->routeCollector->post($pattern, function (...$args) use ($middlewares, $handler) {
             $middlewares = array_merge($middlewares, $this->globalMiddlewares);
             $middlewareResult = $this->middlewareCore->runMiddleware($middlewares, $this->request, $this->response);
             if (!$middlewareResult) {
@@ -204,8 +203,8 @@ class ElectroRouterHandler implements \Electro\App\Abstraction\Server\Router\Rou
             if ($this->response->isIsLock()) {
                 throw new ResponseLockedBeforeHandleController();
             }
-            $params = [$this->request, $this->response];
-            $params = array_merge($params, func_get_args());
+            $params = ["req" => $this->request, "res" => $this->response];
+            $params = array_merge($params, $args);
             call_user_func_array($handler, $params);
         });
         return $this;
@@ -223,7 +222,7 @@ class ElectroRouterHandler implements \Electro\App\Abstraction\Server\Router\Rou
         // get pattern if the name is not null convert to array with name and pattern
         $pattern = $this->getPattern($name, $pattern);
 
-        $this->routeCollector->put($pattern, function () use ($middlewares, $handler) {
+        $this->routeCollector->put($pattern, function (...$args) use ($middlewares, $handler) {
             $middlewares = array_merge($middlewares, $this->globalMiddlewares);
             $middlewareResult = $this->middlewareCore->runMiddleware($middlewares, $this->request, $this->response);
             if (!$middlewareResult) {
@@ -232,8 +231,8 @@ class ElectroRouterHandler implements \Electro\App\Abstraction\Server\Router\Rou
             if ($this->response->isIsLock()) {
                 throw new ResponseLockedBeforeHandleController();
             }
-            $params = [$this->request, $this->response];
-            $params = array_merge($params, func_get_args());
+            $params = ["req" => $this->request, "res" => $this->response];
+            $params = array_merge($params, $args);
             call_user_func_array($handler, $params);
         });
         return $this;
@@ -251,7 +250,7 @@ class ElectroRouterHandler implements \Electro\App\Abstraction\Server\Router\Rou
         // get pattern if the name is not null convert to array with name and pattern
         $pattern = $this->getPattern($name, $pattern);
 
-        $this->routeCollector->patch($pattern, function () use ($middlewares, $handler) {
+        $this->routeCollector->patch($pattern, function (...$args) use ($middlewares, $handler) {
             $middlewares = array_merge($middlewares, $this->globalMiddlewares);
             $middlewareResult = $this->middlewareCore->runMiddleware($middlewares, $this->request, $this->response);
             if (!$middlewareResult) {
@@ -260,8 +259,8 @@ class ElectroRouterHandler implements \Electro\App\Abstraction\Server\Router\Rou
             if ($this->response->isIsLock()) {
                 throw new ResponseLockedBeforeHandleController();
             }
-            $params = [$this->request, $this->response];
-            $params = array_merge($params, func_get_args());
+            $params = ["req" => $this->request, "res" => $this->response];
+            $params = array_merge($params, $args);
             call_user_func_array($handler, $params);
         });
         return $this;
@@ -279,7 +278,7 @@ class ElectroRouterHandler implements \Electro\App\Abstraction\Server\Router\Rou
         // get pattern if the name is not null convert to array with name and pattern
         $pattern = $this->getPattern($name, $pattern);
 
-        $this->routeCollector->delete($pattern, function () use ($middlewares, $handler) {
+        $this->routeCollector->delete($pattern, function (...$args) use ($middlewares, $handler) {
             $middlewares = array_merge($middlewares, $this->globalMiddlewares);
             $middlewareResult = $this->middlewareCore->runMiddleware($middlewares, $this->request, $this->response);
             if (!$middlewareResult) {
@@ -288,8 +287,8 @@ class ElectroRouterHandler implements \Electro\App\Abstraction\Server\Router\Rou
             if ($this->response->isIsLock()) {
                 throw new ResponseLockedBeforeHandleController();
             }
-            $params = [$this->request, $this->response];
-            $params = array_merge($params, func_get_args());
+            $params = ["req" => $this->request, "res" => $this->response];
+            $params = array_merge($params, $args);
             call_user_func_array($handler, $params);
         });
         return $this;
@@ -385,5 +384,10 @@ class ElectroRouterHandler implements \Electro\App\Abstraction\Server\Router\Rou
         $handler = $this->prepareHandler($handler);
         $this->_404Handler = $handler;
         return $this;
+    }
+
+    public function route(string $name, array $params = null): string
+    {
+        return "/" . $this->routeCollector->route($name, $params);
     }
 }

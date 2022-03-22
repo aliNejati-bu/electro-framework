@@ -12,6 +12,8 @@ use Electro\App\Exceptions\Server\HeadersHasSentException;
 class Response implements \Electro\App\Abstraction\Server\ResponseInterface
 {
 
+    private bool $isRedirect = false;
+
     /**
      * added headers store here
      * @var array
@@ -52,7 +54,10 @@ class Response implements \Electro\App\Abstraction\Server\ResponseInterface
 
     private string $_body = '';
 
-
+    public function __construct()
+    {
+        $this->addHeader("X-Powered-By","electroFramework-0.0.1");
+    }
 
     /**
      * @inheritDoc
@@ -154,6 +159,10 @@ class Response implements \Electro\App\Abstraction\Server\ResponseInterface
                 return true;
             }
             echo $this->_body;
+            if ($this->isRedirect){
+                http_response_code(302);
+                die();
+            }
             return true;
         }
     }
@@ -165,6 +174,7 @@ class Response implements \Electro\App\Abstraction\Server\ResponseInterface
     {
         if (!$this->is_lock) {
             $this->addHeader("Location", $url)->send();
+            $this->isRedirect = true;
         }
         return $this;
     }
