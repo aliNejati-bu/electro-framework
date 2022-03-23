@@ -2,12 +2,32 @@
 
 namespace Electro\Server\Http;
 
+use Electro\App\Abstraction\Server\Misc\FileInterface;
 use Electro\App\Abstraction\Server\RequestInterface;
+use Electro\App\Exceptions\Server\FileNotExistsException;
+use Electro\Server\Misc\FileHandler;
 use JetBrains\PhpStorm\Pure;
 use stdClass;
 
 class Request implements RequestInterface
 {
+
+    /**
+     * @var FileHandler[]
+     */
+    public array $_files = [];
+
+
+
+    #[Pure] public function __construct()
+    {
+        foreach ($_FILES as $name => $FILE) {
+            $extension = explode(".", $FILE["name"]);
+            $extension = $extension[count($extension) - 1];
+            $this->_files[$name] = new FileHandler($FILE["name"], $FILE["tmp_name"], $FILE["size"], $FILE["type"], $extension);
+        }
+    }
+
     /**
      * @inheritDoc
      */
@@ -47,6 +67,7 @@ class Request implements RequestInterface
     {
         return $_SESSION;
     }
+
 
     /**
      * @inheritDoc
@@ -162,6 +183,26 @@ class Request implements RequestInterface
      */
     public function getRequestUri(): string
     {
-       return $_SERVER['REQUEST_URI'];
+        return $_SERVER['REQUEST_URI'];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function files(): array
+    {
+        return $this->_files;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function file(string $name): FileInterface
+    {
+        if (isset($this->_files[$name])){
+            return $this->_files[$name];
+        }else{
+            throw new FileNotExistsException($name);
+        }
     }
 }

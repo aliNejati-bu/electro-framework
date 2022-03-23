@@ -2,6 +2,8 @@
 
 namespace Electro\App\Abstraction\Server;
 
+use Electro\App\Abstraction\Server\Misc\FileInterface;
+use Electro\App\Exceptions\Server\FileNotExistsException;
 use stdClass;
 
 interface RequestInterface
@@ -77,22 +79,35 @@ interface RequestInterface
      * @return stdClass|null get Json decoded body
      * get Json decoded body
      */
-    public function jsonBody() : stdClass|null;
+    public function jsonBody(): stdClass|null;
 
     /**
      * @return stdClass
      */
-    public function body():stdClass;
+    public function body(): stdClass;
 
+
+    /**
+     * @return FileInterface[]
+     */
+    public function files(): array;
+
+
+    /**
+     * @param string $name
+     * @return FileInterface
+     * @throws FileNotExistsException
+     */
+    public function file(string $name): FileInterface;
 
     /**
      * @return string
      */
-    public function getMethode():string;
+    public function getMethode(): string;
 
     /**
      * @return string
      */
-    public function getRequestUri():string;
+    public function getRequestUri(): string;
 
 }

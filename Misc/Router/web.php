@@ -13,3 +13,7 @@ use Electro\App\Abstraction\Server\Router\RouterInterface;
 $router->set404("MainController@notFoundError");
 
 $router->GET("/","MainController@index");
+
+$router->POST("/test",function (RequestInterface $req,ResponseInterface $res){
+    var_dump($_FILES);
+});

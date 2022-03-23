@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a7b6df27-9817-4822-bcc6-0b012f15753d" name="Changes" comment="fix: on route not exists in this methode.">
-      <change beforePath="$PROJECT_DIR$/App/Abstraction/Server/ResponseInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Abstraction/Server/ResponseInterface.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Misc/Controller/MainController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Misc/Controller/MainController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/Http/Response.php" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Http/Response.php" afterDir="false" />
+    <list default="true" id="a7b6df27-9817-4822-bcc6-0b012f15753d" name="Changes" comment="fix bug json 404">
+      <change afterPath="$PROJECT_DIR$/App/Abstraction/Server/Misc/FileInterface.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/Exceptions/Server/FileNotExistsException.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Server/Misc/FileHandler.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Abstraction/Server/RequestInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Abstraction/Server/RequestInterface.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Misc/Router/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/Misc/Router/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/Http/Request.php" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Http/Request.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +82,8 @@
       <workItem from="1647592549138" duration="65211000" />
       <workItem from="1647827430013" duration="33336000" />
       <workItem from="1647888399124" duration="10426000" />
-      <workItem from="1647940252036" duration="20109000" />
+      <workItem from="1647940252036" duration="21351000" />
+      <workItem from="1648056012046" duration="4602000" />
     </task>
     <task id="LOCAL-00001" summary="add prefix to namespace.">
       <created>1647592785063</created>
@@ -262,7 +267,14 @@
       <option name="project" value="LOCAL" />
       <updated>1648033489523</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="fix bug json 404">
+      <created>1648034527436</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1648034527436</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -281,7 +293,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="force end." />
     <MESSAGE value="complete ResponseInterface" />
     <MESSAGE value="add RouterInterface" />
     <MESSAGE value="add middleware interface" />
@@ -306,6 +317,7 @@
     <MESSAGE value="add view helper and fix some of bug" />
     <MESSAGE value="add dataBase to project" />
     <MESSAGE value="fix: on route not exists in this methode." />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: on route not exists in this methode." />
+    <MESSAGE value="fix bug json 404" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix bug json 404" />
   </component>
 </project>
