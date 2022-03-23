@@ -16,4 +16,10 @@ return [
     netbeans
     */
     'editor' => 'phpstorm',
+
+    // data base
+    'host' => 'localhost',
+    'username' => 'root',
+    'password' => '',
+    'dbname' => 'hellodb',
 ];

@@ -5,6 +5,7 @@ namespace Bootstrap;
 use Electro\App\Abstraction\Config\ConfigServiceInterface;
 use Electro\App\Abstraction\Server\ServerServiceInterface;
 use Electro\Bootstrap\DicHandler;
+use Electro\Data\Abstraction\DataBaseInterface;
 use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
@@ -34,7 +35,15 @@ class Loader
 
         self::addErrorReporter();
 
+        getContainer(DataBaseInterface::class)->connect(
+            getContainer(ConfigServiceInterface::class)->getConfig('app','host'),
+            getContainer(ConfigServiceInterface::class)->getConfig('app','username'),
+            getContainer(ConfigServiceInterface::class)->getConfig('app','password'),
+            getContainer(ConfigServiceInterface::class)->getConfig('app','dbname'),
+        );
+
         getContainer(ServerServiceInterface::class)->start();
+
 
     }
 
