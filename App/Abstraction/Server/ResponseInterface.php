@@ -93,7 +93,19 @@ interface ResponseInterface
     public function isIsView(): bool;
 
 
+    /**
+     * @param string $body
+     * @return ResponseInterface
+     */
     public function body(string $body): ResponseInterface;
 
+    /**
+     * @return bool
+     */
     public function isIsEnded(): bool;
+
+    /**
+     * @return bool
+     */
+    public function isHtmlAccept(): bool;
 }

@@ -14,6 +14,10 @@ class MainController
 
     public function notFoundError(RequestInterface $req, ResponseInterface $res)
     {
-        $res->status(404)->send(view("Errors>e404",["adr"=>$req->getRequestUri()]));
+        if ($res->isHtmlAccept()){
+            $res->status(404)->send(view("Errors>e404", ["adr" => $req->getRequestUri()]));
+        }else{
+            $res->status(404)->send(["status"=>false,"massage"=>"route not found."]);
+        }
     }
 }

@@ -56,7 +56,7 @@ class Response implements \Electro\App\Abstraction\Server\ResponseInterface
 
     public function __construct()
     {
-        $this->addHeader("X-Powered-By","electroFramework-0.0.1");
+        $this->addHeader("X-Powered-By", "electroFramework-0.0.1");
     }
 
     /**
@@ -106,7 +106,6 @@ class Response implements \Electro\App\Abstraction\Server\ResponseInterface
     public function json(BaseJsonInterface|array $body): ResponseInterface
     {
         if (!$this->isIsLock()) {
-            $this->is_lock = true;
             $this->addHeader("Content-Type", "application/json")->body(json_encode($body))->send();
         }
         return $this;
@@ -159,7 +158,7 @@ class Response implements \Electro\App\Abstraction\Server\ResponseInterface
                 return true;
             }
             echo $this->_body;
-            if ($this->isRedirect){
+            if ($this->isRedirect) {
                 http_response_code(302);
                 die();
             }
@@ -172,7 +171,7 @@ class Response implements \Electro\App\Abstraction\Server\ResponseInterface
      */
     public function redirect(string $url): ResponseInterface
     {
-        if (!$this->is_lock) {
+        if (!$this->isIsLock()) {
             $this->addHeader("Location", $url)->send();
             $this->isRedirect = true;
         }
@@ -207,7 +206,7 @@ class Response implements \Electro\App\Abstraction\Server\ResponseInterface
 
     public function body(string $body): ResponseInterface
     {
-        if (!$this->is_lock) {
+        if (!$this->isIsLock()) {
             $this->_body .= $body;
         }
         return $this;
@@ -232,4 +231,8 @@ class Response implements \Electro\App\Abstraction\Server\ResponseInterface
         return $this;
     }
 
+    public function isHtmlAccept(): bool
+    {
+        return in_array('text/html', explode(",", $_SERVER["HTTP_ACCEPT"]));
+    }
 }
