@@ -12,6 +12,7 @@ use Electro\App\Exceptions\Server\ControllerNotFoundException;
 use Electro\App\Exceptions\Server\HandlerIsNotCallable;
 use Electro\App\Exceptions\Server\ResponseLockedBeforeHandleController;
 use Phroute\Phroute\Dispatcher;
+use Phroute\Phroute\Exception\HttpException;
 use Phroute\Phroute\Exception\HttpRouteNotFoundException;
 use Phroute\Phroute\RouteCollector;
 
@@ -302,7 +303,7 @@ class ElectroRouterHandler implements \Electro\App\Abstraction\Server\Router\Rou
         try {
             $dispatcher = new Dispatcher($this->routeCollector->getData());
             $dispatcher->dispatch($this->request->getMethode(), parse_url($this->request->getRequestUri(), PHP_URL_PATH));
-        } catch (HttpRouteNotFoundException $exception) {
+        } catch (HttpException $exception) {
             if (is_callable($this->_404Handler))
                 call_user_func($this->_404Handler, $this->request, $this->response);
             else

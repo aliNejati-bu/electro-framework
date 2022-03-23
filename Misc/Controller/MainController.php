@@ -14,6 +14,6 @@ class MainController
 
     public function notFoundError(RequestInterface $req, ResponseInterface $res)
     {
-        $res->send(view("Errors>e404",["adr"=>$req->getRequestUri()]));
+        $res->status(404)->send(view("Errors>e404",["adr"=>$req->getRequestUri()]));
     }
 }
