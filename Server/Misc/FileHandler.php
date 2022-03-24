@@ -54,12 +54,15 @@ class FileHandler implements \Electro\App\Abstraction\Server\Misc\FileInterface
      */
     public function copy(string $to, ?string $name = null): bool
     {
-        $target = $to;
+        if (!file_exists($to)) {
+            mkdir($to, 0777, true);
+        }
+        $target = $to . DIRECTORY_SEPARATOR;
         if (is_null($name)) {
             $target = $target . $this->filename;
         } else {
-            $target = $target . $name;
+            $target = $target . $name . "." . $this->extension;
         }
-        return copy($this->path,$target);
+        return copy($this->path, $target);
     }
 }
