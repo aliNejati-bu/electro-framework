@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a7b6df27-9817-4822-bcc6-0b012f15753d" name="Changes" comment="add file to request.">
+    <list default="true" id="a7b6df27-9817-4822-bcc6-0b012f15753d" name="Changes" comment="add error reporter.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Misc/Router/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/Misc/Router/web.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/Misc/FileHandler.php" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Misc/FileHandler.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Abstraction/Server/RequestInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Abstraction/Server/RequestInterface.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Abstraction/Server/ResponseInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Abstraction/Server/ResponseInterface.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/Http/Request.php" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Http/Request.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/Http/Response.php" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Http/Response.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,6 +21,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
   </component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
@@ -79,7 +82,12 @@
       <workItem from="1647827430013" duration="33336000" />
       <workItem from="1647888399124" duration="10426000" />
       <workItem from="1647940252036" duration="21351000" />
-      <workItem from="1648056012046" duration="7359000" />
+      <workItem from="1648056012046" duration="13006000" />
+      <workItem from="1648199771087" duration="5353000" />
+      <workItem from="1648384426761" duration="205000" />
+      <workItem from="1648389804303" duration="33000" />
+      <workItem from="1649142331283" duration="709000" />
+      <workItem from="1649523381581" duration="4076000" />
     </task>
     <task id="LOCAL-00001" summary="add prefix to namespace.">
       <created>1647592785063</created>
@@ -277,7 +285,14 @@
       <option name="project" value="LOCAL" />
       <updated>1648060892480</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="add files to request.">
+      <created>1648102994035</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1648102994035</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -296,8 +311,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="add RouterInterface" />
-    <MESSAGE value="add middleware interface" />
     <MESSAGE value="add di Container" />
     <MESSAGE value="register DIC" />
     <MESSAGE value="add config to project" />
@@ -321,6 +334,8 @@
     <MESSAGE value="fix: on route not exists in this methode." />
     <MESSAGE value="fix bug json 404" />
     <MESSAGE value="add file to request." />
-    <option name="LAST_COMMIT_MESSAGE" value="add file to request." />
+    <MESSAGE value="add files to request." />
+    <MESSAGE value="add error reporter." />
+    <option name="LAST_COMMIT_MESSAGE" value="add error reporter." />
   </component>
 </project>

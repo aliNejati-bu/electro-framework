@@ -9,6 +9,10 @@ use Electro\App\Exceptions\Server\HeadersHasSentException;
 
 interface ResponseInterface
 {
+
+    const MESSAGE_SESSION_NAME = "ele_msg";
+    const ERROR_SESSION_NAME = "ele_err";
+
     /**
      * @param string $key name of the header
      * @param string $value value of the header
@@ -108,4 +112,16 @@ interface ResponseInterface
      * @return bool
      */
     public function isHtmlAccept(): bool;
+
+    /**
+     * @param string $name
+     * @param string $value
+     * @return ResponseInterface
+     */
+    public function withError(string $name, string $value): ResponseInterface;
+
+
+    public function withMessage(string $name, string $value): ResponseInterface;
+
+
 }

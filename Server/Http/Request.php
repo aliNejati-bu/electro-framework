@@ -18,7 +18,6 @@ class Request implements RequestInterface
     public array $_files = [];
 
 
-
     #[Pure] public function __construct()
     {
         foreach ($_FILES as $name => $FILE) {
@@ -199,10 +198,48 @@ class Request implements RequestInterface
      */
     public function file(string $name): FileInterface
     {
-        if (isset($this->_files[$name])){
+        if (isset($this->_files[$name])) {
             return $this->_files[$name];
-        }else{
+        } else {
             throw new FileNotExistsException($name);
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function messages(): array
+    {
+        return $_SESSION[self::MESSAGE_SESSION_NAME] ?? [];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Pure] public function message(string $name = null): null|array|string
+    {
+        if (is_null($name)) {
+            return $this->messages();
+        }
+        return $this->messages()[$name] ?? null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function errors(): array
+    {
+        return $_SESSION[self::ERROR_SESSION_NAME] ?? [];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Pure] public function error(string $name = null): null|array|string
+    {
+        if (is_null($name)) {
+            return $this->errors();
+        }
+        return $this->errors()[$name] ?? null;
     }
 }

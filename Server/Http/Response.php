@@ -12,6 +12,18 @@ use Electro\App\Exceptions\Server\HeadersHasSentException;
 class Response implements \Electro\App\Abstraction\Server\ResponseInterface
 {
 
+
+    /**
+     * @var string[]
+     */
+    private array $messages = [];
+
+
+    private array $errors = [];
+
+    /**
+     * @var bool
+     */
     private bool $isRedirect = false;
 
     /**
@@ -57,6 +69,8 @@ class Response implements \Electro\App\Abstraction\Server\ResponseInterface
     public function __construct()
     {
         $this->addHeader("X-Powered-By", "electroFramework-0.0.1");
+        $_SESSION[self::MESSAGE_SESSION_NAME] = [];
+        $_SESSION[self::ERROR_SESSION_NAME] = [];
     }
 
     /**
@@ -153,12 +167,20 @@ class Response implements \Electro\App\Abstraction\Server\ResponseInterface
             $this->is_ended = true;
             http_response_code($this->_statusCode);
             if ($this->is_view) {
+                $this->_view->addParam("electroError", $this->errors);
+                $this->_view->addParam("electroMessages", $this->messages);
                 $result = $this->_view->render();
                 echo $result;
                 return true;
             }
             echo $this->_body;
             if ($this->isRedirect) {
+                foreach ($this->errors as $name => $error) {
+                    $_SESSION[self::ERROR_SESSION_NAME][$name] = $error;
+                }
+                foreach ($this->messages as $name => $message) {
+                    $_SESSION[self::MESSAGE_SESSION_NAME][$name] = $message;
+                }
                 http_response_code(302);
                 die();
             }
@@ -234,5 +256,24 @@ class Response implements \Electro\App\Abstraction\Server\ResponseInterface
     public function isHtmlAccept(): bool
     {
         return in_array('text/html', explode(",", $_SERVER["HTTP_ACCEPT"]));
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function withError(string $name, string $value): ResponseInterface
+    {
+        $this->messages[$name] = $value;
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function withMessage(string $name, string $value): ResponseInterface
+    {
+        $this->errors[$name] = $value;
+        return $this;
     }
 }

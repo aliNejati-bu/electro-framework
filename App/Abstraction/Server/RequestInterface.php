@@ -8,7 +8,8 @@ use stdClass;
 
 interface RequestInterface
 {
-
+    const MESSAGE_SESSION_NAME = "ele_msg";
+    const ERROR_SESSION_NAME = "ele_err";
     /**
      * @return array all the get parameters
      * for get all get params
@@ -109,5 +110,30 @@ interface RequestInterface
      * @return string
      */
     public function getRequestUri(): string;
+
+
+    /**
+     * @return string[]
+     */
+    public function messages(): array;
+
+    /**
+     * @param string|null $name
+     * @return string[]|string|null
+     */
+    public function message(string $name = null): null|array|string;
+
+
+    /**
+     * @return string[]
+     */
+    public function errors(): array;
+
+    /**
+     * @param string|null $name
+     * @return string[]|string|null
+     */
+    public function error(string $name = null): null|array|string;
+
 
 }
