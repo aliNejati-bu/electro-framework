@@ -13,7 +13,7 @@ return [
     "default_variables" => [
         "base" => BASE_DIR . DIRECTORY_SEPARATOR . "views",
         "dirSep" => DIRECTORY_SEPARATOR,
-        "url" => \RemoteConfig\Classes\Config::getInstance()->getAllConfig("app")["app_url"]
+        "url" => \Electro\Classes\Config::getInstance()->getAllConfig("app")["app_url"]
     ],
     "404" => "err>404"
 ];

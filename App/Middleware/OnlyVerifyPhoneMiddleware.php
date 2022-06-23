@@ -1,8 +1,8 @@
 <?php
 
-namespace RemoteConfig\App\Middleware;
+namespace Electro\App\Middleware;
 
-use RemoteConfig\Boot\Interfaces\MiddlewareInterface;
+use Electro\Boot\Interfaces\MiddlewareInterface;
 
 class OnlyVerifyPhoneMiddleware implements MiddlewareInterface
 {

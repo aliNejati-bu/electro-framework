@@ -1,9 +1,9 @@
 <?php
 
-namespace RemoteConfig\Classes\Validator;
+namespace Electro\Classes\Validator;
 
-use RemoteConfig\Classes\Config;
-use RemoteConfig\Classes\Exception\ValidatorNotFoundException;
+use Electro\Classes\Config;
+use Electro\Classes\Exception\ValidatorNotFoundException;
 use Somnambulist\Components\Validation\Factory;
 use Somnambulist\Components\Validation\Validation;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace RemoteConfig\Classes\SMS;
+namespace Electro\Classes\SMS;
 
-use RemoteConfig\Classes\interfaces\SMSSenderInterface;
+use Electro\Classes\interfaces\SMSSenderInterface;
 
 class SMSManager
 {

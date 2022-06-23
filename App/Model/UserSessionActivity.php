@@ -1,6 +1,6 @@
 <?php
 
-namespace RemoteConfig\App\Model;
+namespace Electro\App\Model;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

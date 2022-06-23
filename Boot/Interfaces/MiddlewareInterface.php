@@ -1,6 +1,6 @@
 <?php
 
-namespace RemoteConfig\Boot\Interfaces;
+namespace Electro\Boot\Interfaces;
 
 interface MiddlewareInterface
 {

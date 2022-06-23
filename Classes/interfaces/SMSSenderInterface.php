@@ -1,6 +1,6 @@
 <?php
 
-namespace RemoteConfig\Classes\interfaces;
+namespace Electro\Classes\interfaces;
 
 interface SMSSenderInterface
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace RemoteConfig\App\Controller;
+namespace Electro\App\Controller;
 
-use RemoteConfig\Classes\Redirect;
-use RemoteConfig\Classes\ViewEngine;
+use Electro\Classes\Redirect;
+use Electro\Classes\ViewEngine;
 
 class PanelController
 {

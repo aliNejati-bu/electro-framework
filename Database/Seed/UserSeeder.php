@@ -1,8 +1,8 @@
 <?php
 
-namespace RemoteConfig\Database\Seed;
+namespace Electro\Database\Seed;
 
-use RemoteConfig\App\Model\User;
+use Electro\App\Model\User;
 
 class UserSeeder
 {

@@ -1,6 +1,6 @@
 <?php
 
-use RemoteConfig\Classes\Config;
+use Electro\Classes\Config;
 
 ?>
 <!DOCTYPE html>

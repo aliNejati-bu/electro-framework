@@ -1,6 +1,6 @@
 <?php
 
-namespace RemoteConfig\Classes;
+namespace Electro\Classes;
 
 use JetBrains\PhpStorm\NoReturn;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace RemoteConfig\App\Controller;
+namespace Electro\App\Controller;
 
 class ExampleController
 {

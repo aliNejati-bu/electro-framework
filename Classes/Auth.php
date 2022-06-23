@@ -1,10 +1,10 @@
 <?php
 
-namespace RemoteConfig\Classes;
+namespace Electro\Classes;
 
 use Firebase\JWT\JWT;
-use RemoteConfig\App\Model\User;
-use RemoteConfig\App\Model\UserSessionActivity;
+use Electro\App\Model\User;
+use Electro\App\Model\UserSessionActivity;
 
 class Auth
 {

@@ -2,9 +2,9 @@
 
 use Phroute\Phroute\RouteCollector;
 use Illuminate\Database\Capsule\Manager as Capsule;
-use RemoteConfig\Classes\Exception\ViewNotFoundedException;
-use RemoteConfig\Classes\Redirect;
-use RemoteConfig\Classes\ViewEngine;
+use Electro\Classes\Exception\ViewNotFoundedException;
+use Electro\Classes\Redirect;
+use Electro\Classes\ViewEngine;
 
 class Boot
 {
@@ -70,7 +70,7 @@ class Boot
     public static function generalBoot()
     {
         spl_autoload_register(function ($class) {
-            $class = str_replace('RemoteConfig\\', "", $class);
+            $class = str_replace('Electro\\', "", $class);
             $file = BASE_DIR . DIRECTORY_SEPARATOR .
                 str_replace("\\", DIRECTORY_SEPARATOR, $class) . // replace \ in class namespace to DIRECTORY_SEPARATOR
                 ".php";
@@ -84,7 +84,7 @@ class Boot
     {
 
         $capsule = new Capsule;
-        $dataBaseConfig = \RemoteConfig\Classes\Config::getInstance()->getAllConfig("database");
+        $dataBaseConfig = \Electro\Classes\Config::getInstance()->getAllConfig("database");
         $capsule->addConnection([
 
             "driver" => "mysql",

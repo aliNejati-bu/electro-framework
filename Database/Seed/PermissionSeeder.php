@@ -1,8 +1,8 @@
 <?php
 
-namespace RemoteConfig\Database\Seed;
+namespace Electro\Database\Seed;
 
-use RemoteConfig\App\Model\Permission;
+use Electro\App\Model\Permission;
 
 class PermissionSeeder
 {

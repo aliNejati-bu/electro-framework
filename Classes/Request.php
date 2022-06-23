@@ -1,8 +1,8 @@
 <?php
 
-namespace RemoteConfig\Classes;
+namespace Electro\Classes;
 
-use RemoteConfig\Classes\Validator\Validator;
+use Electro\Classes\Validator\Validator;
 use Somnambulist\Components\Validation\Validation;
 
 class Request

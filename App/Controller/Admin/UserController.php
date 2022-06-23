@@ -1,10 +1,10 @@
 <?php
 
-namespace RemoteConfig\App\Controller\Admin;
+namespace Electro\App\Controller\Admin;
 
-use RemoteConfig\App\Model\User;
-use RemoteConfig\Classes\Exception\ViewNotFoundedException;
-use RemoteConfig\Classes\ViewEngine;
+use Electro\App\Model\User;
+use Electro\Classes\Exception\ViewNotFoundedException;
+use Electro\Classes\ViewEngine;
 
 class UserController
 {

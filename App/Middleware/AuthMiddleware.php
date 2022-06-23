@@ -1,14 +1,14 @@
 <?php
 
-namespace RemoteConfig\App\Middleware;
+namespace Electro\App\Middleware;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use RemoteConfig\Classes\Auth;
-use RemoteConfig\Classes\Config;
-use RemoteConfig\Classes\Request;
+use Electro\Classes\Auth;
+use Electro\Classes\Config;
+use Electro\Classes\Request;
 
-class AuthMiddleware implements \RemoteConfig\Boot\Interfaces\MiddlewareInterface
+class AuthMiddleware implements \Electro\Boot\Interfaces\MiddlewareInterface
 {
 
     /**

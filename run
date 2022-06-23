@@ -18,7 +18,7 @@ if ($argc == 1) {
     echo "database created." . PHP_EOL;
     echo "------------------------------------------" . PHP_EOL;
     echo "seeding...";
-    (new \RemoteConfig\Database\Seed\DataBaseSeeder())->seeders();
+    (new \Electro\Database\Seed\DataBaseSeeder())->seeders();
     echo "seeded";
     die();
 } elseif ($argv[1] == "reset") {
@@ -31,7 +31,7 @@ if ($argc == 1) {
     echo "database created." . PHP_EOL;
     echo "------------------------------------------" . PHP_EOL;
     echo "seeding...";
-    (new \RemoteConfig\Database\Seed\DataBaseSeeder())->seeders();
+    (new \Electro\Database\Seed\DataBaseSeeder())->seeders();
     echo "seeded";
     die();
 }else{

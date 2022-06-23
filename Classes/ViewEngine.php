@@ -1,8 +1,8 @@
 <?php
 
-namespace RemoteConfig\Classes;
+namespace Electro\Classes;
 
-use RemoteConfig\Classes\Exception\ViewNotFoundedException;
+use Electro\Classes\Exception\ViewNotFoundedException;
 
 class ViewEngine
 {

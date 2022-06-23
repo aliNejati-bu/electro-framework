@@ -1,15 +1,15 @@
 <?php
 
-namespace RemoteConfig\App\Controller;
+namespace Electro\App\Controller;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use RemoteConfig\App\Model\User;
-use RemoteConfig\Classes\Auth;
-use RemoteConfig\Classes\Exception\ValidatorNotFoundException;
-use RemoteConfig\Classes\Redirect;
-use RemoteConfig\Classes\Request;
-use RemoteConfig\Classes\ViewEngine;
+use Electro\App\Model\User;
+use Electro\Classes\Auth;
+use Electro\Classes\Exception\ValidatorNotFoundException;
+use Electro\Classes\Redirect;
+use Electro\Classes\Request;
+use Electro\Classes\ViewEngine;
 
 class IndexController
 {

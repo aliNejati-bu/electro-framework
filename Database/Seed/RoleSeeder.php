@@ -1,8 +1,8 @@
 <?php
 
-namespace RemoteConfig\Database\Seed;
+namespace Electro\Database\Seed;
 
-use RemoteConfig\App\Model\Role;
+use Electro\App\Model\Role;
 
 class RoleSeeder
 {
