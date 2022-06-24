@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a7b6df27-9817-4822-bcc6-0b012f15753d" name="Changes" comment="update nameSpace.">
-      <change beforePath="$PROJECT_DIR$/.idea/myproject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/myproject.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="a7b6df27-9817-4822-bcc6-0b012f15753d" name="Changes" comment="delete static files." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -114,6 +110,7 @@
       <workItem from="1649523381581" duration="4076000" />
       <workItem from="1655973393798" duration="1134000" />
       <workItem from="1655986775274" duration="56000" />
+      <workItem from="1656055778182" duration="674000" />
     </task>
     <task id="LOCAL-00001" summary="add prefix to namespace.">
       <created>1647592785063</created>
@@ -332,7 +329,14 @@
       <option name="project" value="LOCAL" />
       <updated>1655973726385</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="delete static files.">
+      <created>1656055857377</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1656055857377</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -352,7 +356,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="add config to project" />
     <MESSAGE value="add two helper" />
     <MESSAGE value="add Request class to project" />
     <MESSAGE value="add Request and Response" />
@@ -377,6 +380,7 @@
     <MESSAGE value="add error reporter." />
     <MESSAGE value="fix project." />
     <MESSAGE value="update nameSpace." />
-    <option name="LAST_COMMIT_MESSAGE" value="update nameSpace." />
+    <MESSAGE value="delete static files." />
+    <option name="LAST_COMMIT_MESSAGE" value="delete static files." />
   </component>
 </project>
