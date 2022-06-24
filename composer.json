@@ -1,4 +1,15 @@
 {
+    "name": "alinejati-bu/electro-framework",
+    "type": "project",
+    "description": "a starter framework",
+    "version": "1.0.2",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "aliNejati-bu",
+            "email": "electrocellco@gmail.com"
+        }
+    ],
     "require": {
         "phroute/phroute": "^2.1",
         "illuminate/database": "^9.11",
