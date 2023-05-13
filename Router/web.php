@@ -8,16 +8,6 @@ use Electro\App\Controller\PanelController;
  */
 
 
-$router->controller(route("index"), \Electro\App\Controller\IndexController::class);
-
-
-
-$router->group(["before" => ["authMiddleware"], "prefix" => route("panel")], function (RouteCollector $router) {
-    $router->get("/", function () {
-        return (new PanelController)->index();
-    });
-    $router->controller("/user", \Electro\App\Controller\Admin\UserController::class
-    );
-
-
+$router->get("/",function (){
+    return "index";
 });

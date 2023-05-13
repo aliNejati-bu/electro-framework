@@ -1,8 +1,9 @@
 <?php
 
-use Phroute\Phroute\RouteCollector;
+use Electro\Extra\Router;
+
 
 /**
- * @var RouteCollector $router
+ * @var Router $router
  */
 

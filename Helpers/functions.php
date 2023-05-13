@@ -185,5 +185,11 @@ function messages(): mixed
  */
 function getStartDay(): string
 {
-    return date("Y-m-d H:i:s",strtotime("today"));
+    return date("Y-m-d H:i:s", strtotime("today"));
+}
+
+
+function getMiddleware(string $middlewareName)
+{
+    $middlewaresInKernel = (require BASE_DIR . DIRECTORY_SEPARATOR . "Boot" . DIRECTORY_SEPARATOR . "kernelOptions.php")['middleware'];
 }

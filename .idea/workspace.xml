@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="a7b6df27-9817-4822-bcc6-0b012f15753d" name="Changes" comment="delete temp files.">
+      <change beforePath="$PROJECT_DIR$/.idea/myproject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/myproject.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Middleware/ApiAuthMiddleware.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Middleware/ApiAuthMiddleware.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Middleware/AuthMiddleware.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Middleware/AuthMiddleware.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Middleware/ExampleMiddleware.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Middleware/ExampleMiddleware.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Middleware/OnlyVerifyPhoneMiddleware.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Middleware/OnlyVerifyPhoneMiddleware.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Boot/Boot.php" beforeDir="false" afterPath="$PROJECT_DIR$/Boot/Boot.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Helpers/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/Helpers/functions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Router/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/Router/api.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Router/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/Router/web.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,7 +48,7 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="PhpWorkspaceProjectConfiguration">
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="C:\xampp\php\php.exe">
     <include_path>
       <path value="$PROJECT_DIR$/vendor/composer" />
       <path value="$PROJECT_DIR$/vendor/psr/container" />
@@ -71,6 +84,9 @@
       <path value="$PROJECT_DIR$/vendor/illuminate/macroable" />
       <path value="$PROJECT_DIR$/vendor/illuminate/support" />
       <path value="$PROJECT_DIR$/vendor/somnambulist/validation" />
+      <path value="$PROJECT_DIR$/vendor/alinejati/electro-router" />
+      <path value="$PROJECT_DIR$/vendor/symfony/deprecation-contracts" />
+      <path value="$PROJECT_DIR$/vendor/brick/math" />
     </include_path>
   </component>
   <component name="ProjectId" id="26YFJcfKWfAhdScoVWBwgyU6cu5" />
@@ -78,14 +94,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\myproject\App\Exceptions\Config" />
@@ -115,6 +136,7 @@
       <workItem from="1655973393798" duration="1134000" />
       <workItem from="1655986775274" duration="56000" />
       <workItem from="1656055778182" duration="1620000" />
+      <workItem from="1683954021470" duration="3511000" />
     </task>
     <task id="LOCAL-00001" summary="add prefix to namespace.">
       <created>1647592785063</created>

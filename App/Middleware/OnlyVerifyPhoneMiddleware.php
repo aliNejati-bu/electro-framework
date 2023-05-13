@@ -6,10 +6,11 @@ use Electro\Boot\Interfaces\MiddlewareInterface;
 
 class OnlyVerifyPhoneMiddleware implements MiddlewareInterface
 {
-    public function run(): void
+    public function run()
     {
         if (!auth()->userModel->isPhoneVerify()) {
-            redirect(route("verifyPhone"))->exec();
+            return redirect(route("verifyPhone"));
         }
+        return true;
     }
 }
