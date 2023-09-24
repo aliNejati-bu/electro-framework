@@ -58,4 +58,10 @@ class Redirect
         // TODO: fix bug add errors and messages.
     }
 
+    public function route($name, ...$params)
+    {
+        $this->target = route($name, ...$params);
+        return $this;
+    }
+
 }

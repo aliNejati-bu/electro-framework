@@ -12,6 +12,6 @@ class ExampleMiddleware implements MiddlewareInterface
      */
     public function run()
     {
-        return true;
+
     }
 }

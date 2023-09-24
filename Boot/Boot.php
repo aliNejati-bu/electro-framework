@@ -1,7 +1,6 @@
 <?php
 
-
-use Electro\Extra\Router;
+use Phroute\Phroute\RouteCollector;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Electro\Classes\Exception\ViewNotFoundedException;
 use Electro\Classes\Redirect;
@@ -9,7 +8,6 @@ use Electro\Classes\ViewEngine;
 
 class Boot
 {
-    public static Router $router;
     private static array $kernelOptions = [];
 
     /**
@@ -20,34 +18,40 @@ class Boot
         self::generalBoot();
         self::BootDataBase();
         self::errorReporter();
-        $router = new Router();
+        $router = new RouteCollector();
 
-        self::$router = $router;
+        date_default_timezone_set("Asia/Tehran");
 
-        $router->group('/api', function (Router $router) {
-            require_once BASE_DIR . DIRECTORY_SEPARATOR . "Router" . DIRECTORY_SEPARATOR . "api.php";
-        },
-            [
-                function () {
-                    header("Content-Type: application/json");
-                    return true;
-                }
-            ]
-        );
-
-        require_once BASE_DIR . DIRECTORY_SEPARATOR . "Router" . DIRECTORY_SEPARATOR . "web.php";
-
-        $router->set404(function () {
-            http_response_code(404);
-            if (isHtmlAccept()) {
-                return view(get404ViewName());
-            } else {
-                header("Content-Type: application/json");
-                return json_encode(["status" => false, "messages" => ["404 router not founded."]]);
-            }
+        $router->filter("api", function () {
+            header("Content-Type: application/json");
         });
 
-        $response = $router->run($_SERVER['REQUEST_URI'], $_SERVER["REQUEST_METHOD"]);
+
+        self::PrepareMiddlewares($router);
+
+
+        $router->group(["before" => "auth"], function (RouteCollector $router) {
+            $router->group(["prefix" => "/api", 'before' => 'api'], function (RouteCollector $router) {
+                require_once BASE_DIR . DIRECTORY_SEPARATOR . "Router" . DIRECTORY_SEPARATOR . "api.php";
+
+            });
+            require_once BASE_DIR . DIRECTORY_SEPARATOR . "Router" . DIRECTORY_SEPARATOR . "web.php";
+        });
+
+
+        $dispatcher = new Phroute\Phroute\Dispatcher($router->getData());
+
+        try {
+            $response = $dispatcher->dispatch($_SERVER['REQUEST_METHOD'], parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+        } catch (\Phroute\Phroute\Exception\HttpRouteNotFoundException $exception) {
+            if (isHtmlAccept()) {
+                $response = view(get404ViewName());
+            } else {
+                $response = json_encode(["status" => false, "messages" => ["404 router not founded."]]);
+                header("Content-Type: application/json");
+            }
+            http_response_code(404);
+        }
 
 
         if ($response instanceof ViewEngine) {
@@ -103,6 +107,19 @@ class Boot
         $capsule->bootEloquent();
     }
 
+    public static function PrepareMiddlewares(RouteCollector $router)
+    {
+        // get kernel options if not set
+        if (self::$kernelOptions == []) {
+            self::$kernelOptions = require_once BASE_DIR . DIRECTORY_SEPARATOR . "Boot" . DIRECTORY_SEPARATOR . "kernelOptions.php";
+        }
+
+        $middlewares = self::$kernelOptions["middleware"];
+        foreach ($middlewares as $name => $middleware) {
+            $middlewareInstance = new $middleware;
+            $router->filter($name, [$middlewareInstance, "run"]);
+        }
+    }
 
     public static function errorReporter()
     {

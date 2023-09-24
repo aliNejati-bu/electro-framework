@@ -19,17 +19,17 @@ class ApiAuthMiddleware implements \Electro\Boot\Interfaces\MiddlewareInterface
         $configs = Config::getInstance()->getAllConfig('auth');
         if (!isset(\request()->headers()["Authorization"])) {
             http_response_code(403);
-            return json_encode(responseJson(false, [], "token error."));
+            echo json_encode(responseJson(false, [], "token error."));
+            die();
         }
         try {
             $token = explode(" ", \request()->headers()["Authorization"])[1];
             $payLoad = JWT::decode($token, new Key($configs["jwt_key"], $configs["jwt_alg"]));
             Request::getInstance()->auth = (new Auth())->createUSer($payLoad->id);
-            return true;
         } catch (\Throwable $e) {
             http_response_code(403);
-            return json_encode(responseJson(false, [], "token error."));
-
+            echo json_encode(responseJson(false, [], "token error."));
+            die();
         }
     }
 }

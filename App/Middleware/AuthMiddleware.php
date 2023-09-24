@@ -18,16 +18,14 @@ class AuthMiddleware implements \Electro\Boot\Interfaces\MiddlewareInterface
     {
         $configs = Config::getInstance()->getAllConfig('auth');
         if (!isset($_SESSION[$configs['access_token_session_name']])) {
-            return redirect(route('login'))->with('error', 'برای درسترسی به پنل باید وارد شده باشد.');
+            redirect(route('login'))->with('error', 'برای درسترسی به پنل باید وارد شده باشد.')->exec();
         }
         try {
             $token = $_SESSION[$configs['access_token_session_name']];
-            $payLoad = JWT::decode($token, new Key($configs["jwt_key"], $configs["jwt_alg"]));
+            $payLoad = JWT::decode($token,new Key($configs["jwt_key"],$configs["jwt_alg"]));
             Request::getInstance()->auth = (new Auth())->createUSer($payLoad->id);
-            return true;
-
         } catch (\Throwable $e) {
-            return redirect(route('login'))->with('error', 'برای درسترسی به پنل باید وارد شده باشد.');
+            redirect(route('login'))->with('error', 'برای درسترسی به پنل باید وارد شده باشد.')->exec();
         }
     }
 }

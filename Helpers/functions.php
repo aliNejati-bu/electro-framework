@@ -9,7 +9,7 @@ use Electro\Classes\Redirect;
 use Electro\Classes\Request;
 use Electro\Classes\ViewEngine;
 
-#[Pure] function redirect(string $target): Redirect
+#[Pure] function redirect(string $target = ""): Redirect
 {
     return new Redirect($target);
 }
@@ -100,6 +100,13 @@ function get404ViewName(): string
 }
 
 
+function _404()
+{
+    http_response_code(404);
+    return view(get404ViewName());
+}
+
+
 /**
  * @return bool
  */
@@ -163,6 +170,20 @@ function getRandomString(int $n): string
 }
 
 
+function getRandomPassword($n): string
+{
+    $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    $randomString = '';
+
+    for ($i = 0; $i < $n; $i++) {
+        $index = rand(0, strlen($characters) - 1);
+        $randomString .= $characters[$index];
+    }
+
+    return $randomString;
+}
+
+
 /**
  * @return bool
  */
@@ -189,7 +210,240 @@ function getStartDay(): string
 }
 
 
-function getMiddleware(string $middlewareName)
+function includeView(string $viewName)
 {
-    $middlewaresInKernel = (require BASE_DIR . DIRECTORY_SEPARATOR . "Boot" . DIRECTORY_SEPARATOR . "kernelOptions.php")['middleware'];
+    require BASE_DIR . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR . str_replace('>', DIRECTORY_SEPARATOR, $viewName) . ".php";
+}
+
+function getAPI_KEY()
+{
+    return "mcmtnayRu1f9h1oxbAmfRTDitUSDaM9QGV4ZWwaZgIAegBamd7IneR1dAKuUdc97";
+}
+
+function sendCreateAccountSMS($mobile, $name, $user, $pass)
+{
+    $url = "https://api.sms.ir/v1/send/verify";
+
+
+    $SMS_API_KEY = getAPI_KEY();
+    $headers = array(
+        "X-API-KEY: $SMS_API_KEY",
+        "Content-Type: application/json"
+    );
+
+
+    $data = array(
+        "Mobile" => $mobile,
+        "TemplateId" => 967321,
+        "Parameters" => array(
+            array("Name" => "NAME", "Value" => $name),
+            array("Name" => "USER", "Value" => $user),
+            array("Name" => "PASS", "Value" => $pass)
+        )
+    );
+
+    return extracted($url, $data, $headers);
+}
+
+function sendInputPostData($mobile, $name)
+{
+    $url = "https://api.sms.ir/v1/send/verify";
+
+
+    $SMS_API_KEY = getAPI_KEY();
+    $headers = array(
+        "X-API-KEY: $SMS_API_KEY",
+        "Content-Type: application/json"
+    );
+
+
+    $data = array(
+        "Mobile" => $mobile,
+        "TemplateId" => 819422,
+        "Parameters" => array(
+            array("Name" => "NAME", "Value" => $name),
+        )
+    );
+
+    return extracted($url, $data, $headers);
+}
+
+function acceptPostalData($mobile, $name)
+{
+    $url = "https://api.sms.ir/v1/send/verify";
+
+
+    $SMS_API_KEY = getAPI_KEY();
+    $headers = array(
+        "X-API-KEY: $SMS_API_KEY",
+        "Content-Type: application/json"
+    );
+
+
+    $data = array(
+        "Mobile" => $mobile,
+        "TemplateId" => 273775,
+        "Parameters" => array(
+            array("Name" => "NAME", "Value" => $name),
+        )
+    );
+
+    return extracted($url, $data, $headers);
+}
+
+
+function rejectPostalData($mobile, $name)
+{
+    $url = "https://api.sms.ir/v1/send/verify";
+
+
+    $SMS_API_KEY = getAPI_KEY();
+    $headers = array(
+        "X-API-KEY: $SMS_API_KEY",
+        "Content-Type: application/json"
+    );
+
+
+    $data = array(
+        "Mobile" => $mobile,
+        "TemplateId" => 568343,
+        "Parameters" => array(
+            array("Name" => "NAME", "Value" => $name),
+        )
+    );
+
+    return extracted($url, $data, $headers);
+}
+
+
+function createUser($phone, $name, $password)
+{
+
+
+    $user = \Electro\App\Model\User::create([
+        'phone' => $phone,
+        'name' => $name,
+        'password' => $password
+    ]);
+
+
+    sendCreateAccountSMS($user->phone, $user->name, $user->phone, $password);
+    return $user;
+}
+
+function getStatus($status)
+{
+    switch ($status) {
+        case "pending":
+            return "در انتظار تایید مدیریت";
+        case "waiting_for_user":
+            return "در حال آماده سازی | انتظار ورود اطلاعات";
+        case "processing":
+            return "ارسال به چاپ خانه";
+        case "ended":
+            return "پایان یافته";
+    }
+}
+
+function dd(...$vars)
+{
+    foreach ($vars as $var) {
+        var_dump($var);
+    }
+    die();
+}
+
+
+function getTimeDist(int $time)
+{
+    $now = time();
+    $dist = $now - $time;
+    if ($dist < 60) {
+        return $dist . " ثانیه پیش";
+    } else if ($dist < 3600) {
+        return floor($dist / 60) . " دقیقه پیش";
+    } else if ($dist < 86400) {
+        return floor($dist / 3600) . " ساعت پیش";
+    } else if ($dist < 2592000) {
+        return floor($dist / 86400) . " روز پیش";
+    } else if ($dist < 31104000) {
+        return floor($dist / 2592000) . " ماه پیش";
+    } else {
+        return floor($dist / 31104000) . " سال پیش";
+    }
+}
+
+
+function url()
+{
+    return \Electro\Classes\Config::getInstance()->getAllConfig("app")["app_url"];
+}
+
+
+function sendCode(string $mobile, $code)
+{
+    $url = "https://api.sms.ir/v1/send/verify";
+
+
+    $SMS_API_KEY = getAPI_KEY();
+    $headers = array(
+        "X-API-KEY: $SMS_API_KEY",
+        "Content-Type: application/json"
+    );
+
+
+    $data = array(
+        "Mobile" => $mobile,
+        "TemplateId" => 811275,
+        "Parameters" => array(
+            array("Name" => "CODE", "Value" => $code),
+        )
+    );
+
+    return extracted($url, $data, $headers);
+}
+
+/**
+ * @param string $url
+ * @param array $data
+ * @param array $headers
+ * @return bool
+ */
+function extracted(string $url, array $data, array $headers): bool
+{
+    $ch = curl_init($url);
+
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+
+    curl_close($ch);
+
+    if ($httpCode == 200) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+function isEnglish(string $str)
+{
+    $valids = 'a b c d e f g h i j k l m n o p q r s t u v w x y z';
+    $valids .= ' ' . strtoupper($valids);
+    $valids = explode(' ', $valids);
+    for ($i = 0; $i < strlen($str); $i++) {
+        if ($str[$i] == ' ') {
+            continue;
+        }
+        if (!in_array($str[$i], $valids)) {
+            return false;
+        }
+    }
+    return true;
 }

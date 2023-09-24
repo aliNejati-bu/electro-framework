@@ -4,5 +4,5 @@ return [
     "server" => "localhost",
     "username" => "root",
     "password" => "",
-    "dbname" => "remote_config"
+    "dbname" => "nfc"
 ];

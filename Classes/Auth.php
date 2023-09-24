@@ -5,6 +5,7 @@ namespace Electro\Classes;
 use Firebase\JWT\JWT;
 use Electro\App\Model\User;
 use Electro\App\Model\UserSessionActivity;
+use Firebase\JWT\Key;
 
 class Auth
 {
@@ -19,15 +20,17 @@ class Auth
      */
     public static ?Auth $auth = null;
 
+    public bool $isAuth = false;
+
     /**
      * @param string $email
      * @param string $password
      * @param bool $isLong
      * @return bool
      */
-    public function doLogin(string $email, string $password, bool $isLong = false): bool
+    public function doLogin(string $phone, string $password, bool $isLong = false): bool
     {
-        $user = User::getUserByEmailAndPassword($email, $password);
+        $user = User::findUserByPhoneAndPassword($phone, $password);
         if (!$user) {
             return false;
         }
@@ -49,10 +52,32 @@ class Auth
 
             $_SESSION[$authConfig["access_token_session_name"]] = $token;
 
-            $session = UserSessionActivity::create(
-                ["user_id" => $user->id, "token" => $token]
-            );
-            $_SESSION[$authConfig["id_session_name"]] = $session->id;
+
+            return true;
+        } catch (\Exception $exception) {
+            return false;
+        }
+    }
+
+
+    public function doAuth(): bool
+    {
+        try {
+            $authConfig = Config::getInstance()->getAllConfig("auth");
+            $token = $_SESSION[$authConfig["access_token_session_name"]] ?? false;
+            if (!$token) {
+                return false;
+            }
+
+            $payLoad = JWT::decode($token, new Key($authConfig["jwt_key"], $authConfig["jwt_alg"]));
+            $this->isAuth = true;
+            $user = User::query()->find($payLoad->id);
+            if (!$user) {
+                return false;
+            }
+
+            $this->userModel = $user;
+
             return true;
         } catch (\Exception $exception) {
             return false;
@@ -76,7 +101,18 @@ class Auth
      */
     public static function getInstance(): ?Auth
     {
+        if (self::$auth == null)
+            self::$auth = new self();
         return self::$auth;
+    }
+
+
+    public function logout()
+    {
+        $authConfig = Config::getInstance()->getAllConfig("auth");
+        unset($_SESSION[$authConfig["access_token_session_name"]]);
+        $this->userModel = null;
+        $this->isAuth = false;
     }
 
 }

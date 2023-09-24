@@ -49,7 +49,7 @@ class Config
     public static function getInstance(): Config
     {
         if (is_null(self::$config)) {
-            self::$config = new self(BASE_DIR . DIRECTORY_SEPARATOR . "config");
+            self::$config = new self(BASE_DIR . DIRECTORY_SEPARATOR . "Config");
         }
         return self::$config;
     }

@@ -50,6 +50,7 @@ class Request
      */
     public function __construct(private Validator $validator)
     {
+        $this->auth = Auth::getInstance();
     }
 
 
@@ -176,6 +177,17 @@ class Request
             $ip = $_SERVER['REMOTE_ADDR'];
         }
         return $ip;
+    }
+
+    public function post(string $name, mixed $default = null): mixed
+    {
+        return $this->allPost()[$name] ?? $default;
+    }
+
+
+    public function get(string $name, mixed $default = null): mixed
+    {
+        return $_GET[$name] ?? $default;
     }
 
 }

@@ -2,28 +2,17 @@
 
 namespace Electro\App\Model;
 
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class User extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        "user_email",
-        "password",
-        "phone",
-        "user_type",
-        "is_phone_verified",
-        "is_email_verified",
-        "is_super_admin",
-        'is_admin',
-        'name',
-        'is_available'
-    ];
+    protected $guarded = ["id"];
 
     public function setPasswordAttribute($value)
     {
@@ -46,114 +35,29 @@ class User extends Model
         return $this->hasMany(EmailLink::class);
     }
 
+    /**
+     * @return HasMany
+     */
+    public function profiles(): HasMany
+    {
+        return $this->hasMany(UserProfile::class);
+    }
 
     /**
      * @return HasMany
      */
-    public function slugs(): HasMany
+    public function orders(): HasMany
     {
-        return $this->hasMany(Slug::class);
+        return $this->hasMany(Order::class);
     }
 
-    /**
-     * @return HasMany
-     */
-    public function news(): HasMany
+    public static function findUserByPhoneAndPassword($phone, $password)
     {
-        return $this->hasMany(News::class);
-    }
-
-
-    /**
-     * @return BelongsToMany
-     */
-    public function roles(): BelongsToMany
-    {
-        return $this->belongsToMany(Role::class);
-    }
-
-
-    /**
-     * @return HasMany
-     */
-    public function clicks(): HasMany
-    {
-        return $this->hasMany(Click::class);
-    }
-
-
-    public static function getUserByEmailAndPassword(string $email, string $password)
-    {
-        $user = self::where("user_email", $email)->first();
-        if (!$user || !password_verify($password, $user->password)) {
+        $user = User::where("phone", $phone)->first();
+        if (!$user) {
             return false;
         }
-        return $user;
+        return password_verify($password, $user->password) ? $user : false;
     }
 
-
-    /**
-     * @return BelongsToMany
-     */
-    public function userSessionActivities(): BelongsToMany
-    {
-        return $this->belongsToMany(UserSessionActivity::class);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isSuperAdmin(): bool
-    {
-        return boolval($this->is_super_admin);
-    }
-
-    /**
-     * @param string $permissionName
-     * @return bool
-     */
-    public function hasPermission(string $permissionName): bool
-    {
-        $roles = $this->roles()->get();
-        foreach ($roles as $role) {
-            $permissions = $role->permissions()->get();
-            foreach ($permissions as $permission) {
-                if ($permission->permission_name == $permissionName) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isAdmin(): bool
-    {
-        return boolval($this->is_admin);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isPhoneVerify(): bool
-    {
-        return boolval($this->is_phone_verified);
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function canCreateSlug(): bool
-    {
-        if ($this->user_type == 2) {
-            return true;
-        } elseif ($this->user_type == 1) {
-            return $this->slugs()->count() < 30;
-        } else {
-            return $this->slugs()->count() < 5;
-        }
-    }
 }

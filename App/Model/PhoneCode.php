@@ -15,7 +15,8 @@ class PhoneCode extends Model
         "code",
         "expire_at",
         "is_usesd",
-        "user_id"
+        "user_id",
+        "is_available"
     ];
 
     /**

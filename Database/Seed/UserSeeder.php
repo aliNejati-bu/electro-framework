@@ -10,29 +10,23 @@ class UserSeeder
     {
         $users = [
             [
-                "user_email" => "electrocellco@gmail.com",
-                "password" => "13811381my",
-                "user_type" => 3,
-                "is_email_verified" => true,
-                "is_super_admin" => true,
-                "is_admin" => true,
-                "roles" => [],
-                "name" => "علی نجاتی"
-            ],[
-                "user_email" => "test@gmail.com",
-                "password" => "13811381my",
-                "user_type" => 3,
-                "is_email_verified" => true,
-                "is_super_admin" => false,
-                "is_admin" => true,
-                "name" => "کاربر تست",
-                "roles" => [1]
+                "phone" => "09123456789",
+                "name" => "رضا محاجرانی",
+                "password" => '101020203030',
+                "shipping_address" => "ایران تهران خیابان انقلاب",
+                "user_type" => 1,
             ],
+            [
+                "phone" => "09010544998",
+                "name" => "محمد رضا جعفری پور",
+                "password" => '101020203030',
+                "shipping_address" => "همه جای ایران",
+                "user_type" => 0,
+            ]
         ];
 
-        foreach ($users as $user){
-            $u = User::create($user);
-            $u->roles()->attach($user["roles"]);
+        foreach ($users as $user) {
+            User::create($user);
         }
     }
 }

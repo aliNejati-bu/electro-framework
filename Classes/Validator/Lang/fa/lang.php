@@ -29,7 +29,7 @@ return [
     'rule.ipv6' => ':attribute must be a valid IPv6 address',
     'rule.json' => ':attribute must be a valid JSON string',
     'rule.lowercase' => ':attribute must be lowercase',
-    'rule.max' => ':attribute maximum is :max',
+    'rule.max' => ':attribute نباید بیشتر از :max باشد.',
     'rule.mimes' => ':attribute file type must be :allowed_types',
     'rule.min' => ':attribute باید از :min رقم/تعداد بیشتر باشد.',
     'rule.not_in' => ':attribute نباید مقداری :  :disallowed_values باشد.',

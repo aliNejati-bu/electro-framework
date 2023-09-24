@@ -4,7 +4,7 @@ use Electro\App\Model\User;
 use Electro\Classes\Validator\Rules;
 
 return [
-    "email" => ['required', 'email', 'min:3'],
-    "password" => ['required', 'min:8'],
-    "isLong"=> ["default:0","required"]
+    "phone" => ['required', 'min:10','max:11'],
+    "password" => ['required'],
+    "isLong" => ["default:0"]
 ];
